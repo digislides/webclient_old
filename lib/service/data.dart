@@ -7,11 +7,20 @@ abstract class DataService {
 }
 
 class StateService {
-  List<String> selectedIds = <String>[];
+  Set<String> selectedIds = new Set<String>();
 
   String editingPage;
 
   Program program;
+
+  void toggleSelection(Page page) {
+    String id = page.id;
+    if(selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
+  }
 }
 
 class MockService implements DataService {

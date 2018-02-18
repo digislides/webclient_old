@@ -21,12 +21,16 @@ class SlideThumbnail implements Component {
 
   final bool isEditing;
 
-  SlideThumbnail(this.page, this.isEditing);
+  final bool isSelected;
+
+  SlideThumbnail(this.page, this.isEditing, this.isSelected);
 
   @override
   dynamic build(BuildContext context) => div(content: [
-        div(set: thumbHolderProps),
-        span(content: page.name, set: titleProps)
+        slideSelectorComp(isSelected,
+            onChange: (_) => state.toggleSelection(page)),
+        div(classes: ['slideslist-item-thumb-holder']),
+        span(content: page.name, classes: ['slideslist-item-title'])
       ], set: rootProps);
 
   List<Setter> get rootProps => <Setter>[
@@ -34,22 +38,16 @@ class SlideThumbnail implements Component {
         clazzIf(isEditing, 'editing'),
         onClick((_) => state.editingPage = page.id),
       ];
-
-  static final thumbHolderProps = <Setter>[
-    clazz('slideslist-item-thumb-holder'),
-  ];
-
-  static final titleProps = <Setter>[
-    clazz('slideslist-item-title'),
-  ];
 }
 
 class SlideListComponent implements Component {
-  List<Page> pages = [];
+  final List<Page> pages;
 
-  String editing;
+  final String editing;
 
-  SlideListComponent(this.pages, this.editing);
+  final Set<String> selected;
+
+  SlideListComponent(this.pages, this.editing, this.selected);
 
   @override
   dynamic build(BuildContext context) =>
@@ -57,7 +55,10 @@ class SlideListComponent implements Component {
         div(
           key: 'slides-holder',
           content: flat(
-              foreach(pages, (p) => new SlideThumbnail(p, p.id == editing)),
+              foreach(
+                  pages,
+                  (p) => new SlideThumbnail(
+                      p, p.id == editing, selected.contains(p.id))),
               div(content: '+', set: [
                 clazz('slideslist-add'),
                 onClick((_) => state.program.newPage())
@@ -109,3 +110,26 @@ class StateStorage {
 }
 
 final StateStorage storage = new StateStorage();
+
+class SlideSelectComp implements Component {
+  final bool isSelected;
+
+  SlideSelectComp(this.isSelected);
+
+  @override
+  dynamic build(BuildContext context) {
+    return div();
+  }
+}
+
+Element slideSelectorComp(bool isSelected,
+    {List<Setter> set = const [], void onChange(bool state)}) {
+  return div(
+      content: isSelected ? '&#x2713;' : '',
+      set: [
+        clazz('slide-selector'),
+        onClick((_) {
+          if (onChange != null) onChange(isSelected);
+        })
+      ]..addAll(set));
+}
