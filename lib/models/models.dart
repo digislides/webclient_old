@@ -11,6 +11,8 @@ abstract class PageItem {
 }
 
 class Page {
+  String id = '';
+
   String name = "";
 
   int width = 0;
@@ -32,4 +34,14 @@ class Page {
   List<PageItem> items = new List<PageItem>();
 
   Page();
+}
+
+class Program {
+  List<Page> pages;
+
+
+
+  void newPage() => pages.add(new Page()
+    ..id = '1'
+    ..name = 'New page');
 }

@@ -1,14 +1,113 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
-#output {
-  padding: 20px;
-  text-align: center;
+.slideslist-main {
+    background-color: rgb(70, 70, 70);
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100px;
+    box-shadow: inset 0px -3px 8px 1px #00000036;
+    user-select: none;
+    overflow-hidden;
+}
+
+.slideslist-list {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.slideslist-list::-webkit-scrollbar {
+    height: 5px;
+}
+.slideslist-list::-webkit-scrollbar-button       { /* 2 */ }
+.slideslist-list::-webkit-scrollbar-track {
+    background-color: #ffffff4f;
+}
+.slideslist-list::-webkit-scrollbar-track-piece  { /* 4 */ }
+
+.slideslist-list::-webkit-scrollbar-thumb {
+    background-color: #ffffff8f;
+}
+
+.slideslist-list:hover::-webkit-scrollbar-thumb {
+    background-color: #ffffffaf;
+}
+
+.slideslist-list::-webkit-scrollbar-corner {
+
+}
+
+.slideslist-item-holder {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 100%;
+    margin: 0px 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.slideslist-item-thumb-holder {
+    width: 100%;
+    flex: 1 1 auto;
+    margin: 5px 0px;
+    border-radius: 5px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.slideslist-item-holder:hover .slideslist-item-thumb-holder {
+    box-shadow: 0px 0px 4px 3px #a9a9a99c;
+}
+
+.slideslist-item-title {
+    color: #c2c2c1;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 5px;
+    user-select: none;
+    padding: 3px 4px;
+    width: auto;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.slideslist-item-holder.editing .slideslist-item-title {
+    color: rgb(222, 222, 220);
+    background-color: #7d7d7d85;
+}
+
+.slideslist-add {
+    width: 80px;
+    height: 100%;
+    font-size: 80px;
+    line-height: 100px;
+    text-align: center;
+    color: #7d7d7d;
+    cursor: pointer;
+}
+
+.slideslist-add:hover {
+    color: greenyellow;
+}
+
+.slideslist-add:active {
+    color: #7d7d7d;
 }

@@ -10,6 +10,8 @@ environment:
 dependencies:
   domino:
     path: ../../domino/domino
+  domino_nodes:
+    path: ../../domino/domino_nodes
 
 dev_dependencies:
   browser: ^0.10.0
