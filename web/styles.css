@@ -93,6 +93,7 @@ html, body {
     border-radius: 4px;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: col-resize;
 }
 
 .slideslist-add {
@@ -129,6 +130,10 @@ html, body {
 
 .slideslist-item-holder:hover .slide-selector {
     display: block;
+}
+
+.slideslist-item-holder.dragged {
+    background-color: gray;
 }
 
 .slide-selector.selected {

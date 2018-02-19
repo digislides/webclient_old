@@ -50,6 +50,16 @@ class Program {
     // TODO add new page to pages
   }
 
+  void movePageTo(String pageId, int newPos) {
+    final page = pages.firstWhere((p) => p.id == pageId, orElse: () => null);
+    pages.remove(page);
+    if (newPos < pages.length) {
+      pages.insert(newPos, page);
+    } else {
+      pages.add(page);
+    }
+  }
+
   void newPage() => pages.add(new Page()
     ..id = '1'
     ..name = 'New page');

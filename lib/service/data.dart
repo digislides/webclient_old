@@ -13,6 +13,10 @@ class StateService {
 
   Program program;
 
+  String dragged;
+
+  int oldPos;
+
   void toggleSelection(Page page) {
     String id = page.id;
     if (selectedIds.contains(id)) {

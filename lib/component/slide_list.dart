@@ -44,20 +44,31 @@ class SlideThumbnail implements Component {
 
   final bool isSelected;
 
-  SlideThumbnail(this.page, this.isEditing, this.isSelected);
+  final bool isDraggable;
+
+  SlideThumbnail(this.page, this.isEditing, this.isSelected, this.isDraggable);
 
   @override
   dynamic build(BuildContext context) => div(content: [
         slideSelectorComp(isSelected,
-            onChange: (_) => state.toggleSelection(page)),
+            onChange: (_) => state.toggleSelection(page), key: page.id),
         div(classes: ['slideslist-item-thumb-holder']),
-        span(content: page.name, classes: ['slideslist-item-title'])
-      ], set: rootProps);
+        span(
+          content: page.name,
+          classes: ['slideslist-item-title'],
+          set: when(isDraggable, onMouseDown((_) {
+            state.dragged = page.id;
+            state.oldPos = state.program.pages.indexOf(page);
+          })),
+        )
+      ], set: rootProps, key: page.id);
 
   List<Setter> get rootProps => <Setter>[
         clazz('slideslist-item-holder'),
         clazzIf(isEditing, 'editing'),
+        when(state.dragged != null, style('pointer-events', 'none')),
         onClick((_) => state.editingPage = page.id),
+        clazzIf(state.dragged == page.id, 'dragged'),
       ];
 }
 
@@ -78,17 +89,42 @@ class SlideListComponent implements Component {
           content: flat(
               foreach(
                   pages,
-                  (p) => new SlideThumbnail(
-                      p, p.id == editing, selected.contains(p.id))),
+                  (p) => new SlideThumbnail(p, p.id == editing,
+                      selected.contains(p.id), selected.length == 0)),
               div(content: '+', set: [
                 clazz('slideslist-add'),
-                onClick((_) => state.program.newPage())
+                state.dragged != null ? style('pointer-events', 'none') : null,
+                onClick((_) {
+                  state.program.newPage();
+                })
               ])),
           set: [
             clazz('slideslist-list'),
             onWheel(_scroll),
             new AfterInsert(_update),
             new AfterUpdate(_update),
+            state.dragged != null ? style('cursor', 'col-resize') : null,
+            state.dragged != null
+                ? onMouseMove((Event e) {
+                    if (state.dragged != null) {
+                      html.MouseEvent event = e.domEvent;
+                      final newPos = event.offset.x ~/ 100;
+                      state.program.movePageTo(state.dragged, newPos);
+                    }
+                  })
+                : null,
+            state.dragged != null
+                ? onMouseUp((Event e) {
+                    state.dragged = null;
+                    state.oldPos = null;
+                  })
+                : null,
+            state.dragged != null
+                ? onMouseOut((Event e) {
+                    state.dragged = null;
+                    state.oldPos = null;
+                  })
+                : null,
           ],
         ),
         new SlideListControls(selected.length),
@@ -144,7 +180,7 @@ class SlideSelectComp implements Component {
 }
 
 Element slideSelectorComp(bool isSelected,
-    {List<Setter> set = const [], void onChange(bool state)}) {
+    {List<Setter> set = const [], void onChange(bool state), key}) {
   return div(
       content: isSelected ? '\u2713' : '',
       set: [
@@ -153,7 +189,8 @@ Element slideSelectorComp(bool isSelected,
         onClick((_) {
           if (onChange != null) onChange(isSelected);
         })
-      ]..addAll(set));
+      ]..addAll(set),
+      key: key);
 }
 
 dynamic when(condition, result) {
