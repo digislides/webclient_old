@@ -8,12 +8,21 @@ import 'package:client/models/models.dart';
 import 'package:client/service/data.dart';
 
 class SlideListControls implements Component {
-  final int selected;
+  final int numSelected;
 
-  SlideListControls(this.selected);
+  SlideListControls(this.numSelected);
 
   @override
-  dynamic build(BuildContext context) => div(content: []);
+  dynamic build(BuildContext context) => div(content: [
+        when(numSelected == 0,
+            div(content: '+', set: [clazz('slideslist-controls-item')])),
+        when(numSelected >= 1,
+            div(content: '-', set: [clazz('slideslist-controls-item')])),
+        when(numSelected == 1,
+            div(content: '*', set: [clazz('slideslist-controls-item')])),
+      ], set: [
+        clazz('slideslist-controls')
+      ]);
 }
 
 class SlideThumbnail implements Component {
@@ -70,7 +79,7 @@ class SlideListComponent implements Component {
             new AfterUpdate(_update),
           ],
         ),
-        new SlideListControls(0),
+        new SlideListControls(selected.length),
       ]);
 
   void _update(dynamic node) {
@@ -125,11 +134,21 @@ class SlideSelectComp implements Component {
 Element slideSelectorComp(bool isSelected,
     {List<Setter> set = const [], void onChange(bool state)}) {
   return div(
-      content: isSelected ? '&#x2713;' : '',
+      content: isSelected ? '\u2713' : '',
       set: [
         clazz('slide-selector'),
+        clazzIf(isSelected, 'selected'),
         onClick((_) {
           if (onChange != null) onChange(isSelected);
         })
       ]..addAll(set));
+}
+
+dynamic when(condition, result) {
+  if (condition is Function) condition = condition();
+  if (condition) {
+    if (result is Function) return result();
+    return result;
+  }
+  return null;
 }

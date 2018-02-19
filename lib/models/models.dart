@@ -39,8 +39,6 @@ class Page {
 class Program {
   List<Page> pages;
 
-
-
   void newPage() => pages.add(new Page()
     ..id = '1'
     ..name = 'New page');

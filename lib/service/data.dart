@@ -15,7 +15,7 @@ class StateService {
 
   void toggleSelection(Page page) {
     String id = page.id;
-    if(selectedIds.contains(id)) {
+    if (selectedIds.contains(id)) {
       selectedIds.remove(id);
     } else {
       selectedIds.add(id);
