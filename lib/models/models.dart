@@ -39,6 +39,17 @@ class Page {
 class Program {
   List<Page> pages;
 
+  void removePagesById(Set<String> ids) {
+    pages.removeWhere((p) => ids.contains(p.id));
+  }
+
+  void duplicatePage(String pageId) {
+    final page = pages.firstWhere((p) => p.id == pageId, orElse: () => null);
+    // TODO clone page
+    // TODO give new page new id
+    // TODO add new page to pages
+  }
+
   void newPage() => pages.add(new Page()
     ..id = '1'
     ..name = 'New page');

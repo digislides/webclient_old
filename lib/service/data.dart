@@ -21,6 +21,11 @@ class StateService {
       selectedIds.add(id);
     }
   }
+
+  void removeSelectedPages() {
+    program.removePagesById(selectedIds);
+    selectedIds.clear();
+  }
 }
 
 class MockService implements DataService {

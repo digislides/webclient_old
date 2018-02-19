@@ -14,12 +14,24 @@ class SlideListControls implements Component {
 
   @override
   dynamic build(BuildContext context) => div(content: [
-        when(numSelected == 0,
-            div(content: '+', set: [clazz('slideslist-controls-item')])),
-        when(numSelected >= 1,
-            div(content: '-', set: [clazz('slideslist-controls-item')])),
-        when(numSelected == 1,
-            div(content: '*', set: [clazz('slideslist-controls-item')])),
+        when(
+            numSelected == 0,
+            div(content: '+', set: [
+              clazz('slideslist-controls-item'),
+              onClick((_) => state.program.newPage())
+            ])),
+        when(
+            numSelected >= 1,
+            div(content: '-', set: [
+              clazz('slideslist-controls-item'),
+              onClick((_) => state.removeSelectedPages())
+            ])),
+        when(
+            numSelected == 1,
+            div(content: '*', set: [
+              clazz('slideslist-controls-item'),
+              onClick((_) => state.program.duplicatePage(state.editingPage))
+            ])),
       ], set: [
         clazz('slideslist-controls')
       ]);
