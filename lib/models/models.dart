@@ -36,10 +36,18 @@ class Page {
   List<PageItem> items = new List<PageItem>();
 
   Page();
+
+  Page clone() {
+    return new Page();
+  }
 }
 
 class Program {
   List<Page> pages;
+
+  int width = 0;
+
+  int height = 0;
 
   void removePagesById(Set<String> ids) {
     pages.removeWhere((p) => ids.contains(p.id));
@@ -47,9 +55,9 @@ class Program {
 
   void duplicatePage(String pageId) {
     final page = pages.firstWhere((p) => p.id == pageId, orElse: () => null);
-    if(page == null) return;
+    if (page == null) return;
     // TODO clone page
-    Page dupPage = newPage();
+    Page dupPage = page.clone();
     // Give new page new id
     dupPage.id = new ObjectId().toHexString();
     // Add new page to pages
@@ -69,5 +77,7 @@ class Program {
 
   void newPage() => pages.add(new Page()
     ..id = new ObjectId().toHexString()
-    ..name = 'New page');
+    ..name = 'New page'
+    ..width = width
+    ..height = height);
 }

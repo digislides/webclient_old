@@ -120,12 +120,20 @@ class SlideListComponent implements Component {
             state.dragged != null ? style('cursor', 'col-resize') : null,
             state.dragged != null
                 ? onMouseMove((Event e) {
-                    if (state.dragged != null) {
+                    html.Element el = storage.getByKey('slideslist.element');
+                    if (state.dragged != null && el != null) {
                       html.MouseEvent event = e.domEvent;
-                      state.dragXPos = event.offset.x;
+                      state.dragXPos = el.scrollLeft + event.offset.x;
                       state.dragYPos = event.offset.y;
-                      final newPos = event.offset.x ~/ 100;
+                      final int newPos = state.dragXPos ~/ 110;
                       state.program.movePageTo(state.dragged, newPos);
+                      if (state.dragXPos > (el.offsetWidth - 55)) {
+                        el.scrollLeft += 10;
+                        state.dragXPos += 10;
+                      } else if (state.dragXPos < (el.scrollLeft + 55)) {
+                        el.scrollLeft -= 10;
+                        state.dragXPos -= 10;
+                      }
                     }
                   })
                 : null,
