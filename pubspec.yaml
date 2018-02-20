@@ -12,6 +12,8 @@ dependencies:
     path: ../../domino/domino
   domino_nodes:
     path: ../../domino/domino_nodes
+  bson_objectid: ^0.1.0
+  jaguar_serializer: ^0.5.1
 
 dev_dependencies:
   browser: ^0.10.0

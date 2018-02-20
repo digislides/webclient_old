@@ -26,6 +26,7 @@ html, body {
     display: flex;
     flex-direction: row;
     height: 100%;
+    position: relative;
 }
 
 .slideslist-list::-webkit-scrollbar {
@@ -68,7 +69,7 @@ html, body {
 }
 
 .slideslist-item-holder.editing .slideslist-item-title {
-    color: rgb(222, 222, 220);
+    color: rgb(29, 255, 194);
     background-color: #7d7d7d85;
 }
 
@@ -132,10 +133,6 @@ html, body {
     display: block;
 }
 
-.slideslist-item-holder.dragged {
-    background-color: gray;
-}
-
 .slide-selector.selected {
     display: block;
 }
@@ -173,4 +170,40 @@ html, body {
 
 .slideslist-controls-item:active {
     background-color: transparent;
+}
+
+.slideslist-dragged {
+    color: black;
+    background-color: #c1fffe;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3px 4px;
+    width: auto;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+}
+
+.slidelist-dropzone {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: calc(100% - 20px);
+    margin: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    align-content: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    user-select: none;
+    pointer-events: none;
+    border: 2px dashed gray;
+    border-radius: 10px;
+    text-align: center;
 }

@@ -15,7 +15,16 @@ class StateService {
 
   String dragged;
 
+  int dragXPos;
+
+  int dragYPos;
+
   int oldPos;
+
+  Page get draggedPage {
+    if (dragged == null) return null;
+    return program.pages.firstWhere((p) => p.id == dragged, orElse: () => null);
+  }
 
   void toggleSelection(Page page) {
     String id = page.id;

@@ -1,3 +1,5 @@
+import 'package:bson_objectid/bson_objectid.dart';
+
 abstract class PageItem {
   String get name;
 
@@ -45,9 +47,14 @@ class Program {
 
   void duplicatePage(String pageId) {
     final page = pages.firstWhere((p) => p.id == pageId, orElse: () => null);
+    if(page == null) return;
     // TODO clone page
-    // TODO give new page new id
-    // TODO add new page to pages
+    Page dupPage = newPage();
+    // Give new page new id
+    dupPage.id = new ObjectId().toHexString();
+    // Add new page to pages
+    int pos = pages.indexOf(page);
+    pages.insert(pos + 1, dupPage);
   }
 
   void movePageTo(String pageId, int newPos) {
@@ -61,6 +68,6 @@ class Program {
   }
 
   void newPage() => pages.add(new Page()
-    ..id = '1'
+    ..id = new ObjectId().toHexString()
     ..name = 'New page');
 }

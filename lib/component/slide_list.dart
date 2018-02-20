@@ -49,26 +49,32 @@ class SlideThumbnail implements Component {
   SlideThumbnail(this.page, this.isEditing, this.isSelected, this.isDraggable);
 
   @override
-  dynamic build(BuildContext context) => div(content: [
-        slideSelectorComp(isSelected,
-            onChange: (_) => state.toggleSelection(page), key: page.id),
-        div(classes: ['slideslist-item-thumb-holder']),
-        span(
-          content: page.name,
-          classes: ['slideslist-item-title'],
-          set: when(isDraggable, onMouseDown((_) {
-            state.dragged = page.id;
-            state.oldPos = state.program.pages.indexOf(page);
-          })),
-        )
-      ], set: rootProps, key: page.id);
+  dynamic build(BuildContext context) {
+    if (page.id == state.dragged)
+      return div(set: [clazz('slidelist-dropzone')], content: 'Move it here?');
+    return div(content: [
+      slideSelectorComp(isSelected,
+          onChange: (_) => state.toggleSelection(page), key: page.id),
+      div(classes: ['slideslist-item-thumb-holder']),
+      span(
+        content: page.name,
+        classes: ['slideslist-item-title'],
+        set: when(isDraggable, onMouseDown((Event e) {
+          html.MouseEvent event = e.domEvent;
+          state.dragged = page.id;
+          state.oldPos = state.program.pages.indexOf(page);
+          state.dragXPos = event.offset.x;
+          state.dragYPos = event.offset.y;
+        })),
+      )
+    ], set: rootProps, key: page.id);
+  }
 
   List<Setter> get rootProps => <Setter>[
         clazz('slideslist-item-holder'),
         clazzIf(isEditing, 'editing'),
         when(state.dragged != null, style('pointer-events', 'none')),
         onClick((_) => state.editingPage = page.id),
-        clazzIf(state.dragged == page.id, 'dragged'),
       ];
 }
 
@@ -87,27 +93,37 @@ class SlideListComponent implements Component {
         div(
           key: 'slides-holder',
           content: flat(
-              foreach(
-                  pages,
-                  (p) => new SlideThumbnail(p, p.id == editing,
-                      selected.contains(p.id), selected.length == 0)),
-              div(content: '+', set: [
-                clazz('slideslist-add'),
-                state.dragged != null ? style('pointer-events', 'none') : null,
-                onClick((_) {
-                  state.program.newPage();
-                })
-              ])),
+            foreach(
+                pages,
+                (p) => new SlideThumbnail(p, p.id == editing,
+                    selected.contains(p.id), selected.length == 0)),
+            div(content: '+', set: [
+              clazz('slideslist-add'),
+              state.dragged != null ? style('pointer-events', 'none') : null,
+              onClick((_) {
+                state.program.newPage();
+              })
+            ]),
+            when(
+                state.dragged != null,
+                () => div(content: state.draggedPage.name, set: [
+                      clazz('slideslist-dragged'),
+                      style('left', '${state.dragXPos - 10}px'),
+                      style('top', '${state.dragYPos - 10}px'),
+                    ])),
+          ),
+          afterInsert: _update,
+          afterUpdate: _update,
           set: [
             clazz('slideslist-list'),
             onWheel(_scroll),
-            new AfterInsert(_update),
-            new AfterUpdate(_update),
             state.dragged != null ? style('cursor', 'col-resize') : null,
             state.dragged != null
                 ? onMouseMove((Event e) {
                     if (state.dragged != null) {
                       html.MouseEvent event = e.domEvent;
+                      state.dragXPos = event.offset.x;
+                      state.dragYPos = event.offset.y;
                       final newPos = event.offset.x ~/ 100;
                       state.program.movePageTo(state.dragged, newPos);
                     }
@@ -117,12 +133,16 @@ class SlideListComponent implements Component {
                 ? onMouseUp((Event e) {
                     state.dragged = null;
                     state.oldPos = null;
+                    state.dragXPos = null;
+                    state.dragYPos = null;
                   })
                 : null,
             state.dragged != null
                 ? onMouseOut((Event e) {
                     state.dragged = null;
                     state.oldPos = null;
+                    state.dragXPos = null;
+                    state.dragYPos = null;
                   })
                 : null,
           ],
