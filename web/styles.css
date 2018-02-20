@@ -8,6 +8,11 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+.main-area {
+    width: 100%;
+    height: calc(100% - 100px);
+}
+
 .slideslist-main {
     background-color: rgb(70, 70, 70);
     display: flex;

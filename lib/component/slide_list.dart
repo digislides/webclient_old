@@ -30,7 +30,7 @@ class SlideListControls implements Component {
             numSelected == 1,
             div(content: '*', set: [
               clazz('slideslist-controls-item'),
-              onClick((_) => state.program.duplicatePage(state.editingPage))
+              onClick((_) => state.program.duplicatePage(state.editingId))
             ])),
       ], set: [
         clazz('slideslist-controls')
@@ -74,7 +74,7 @@ class SlideThumbnail implements Component {
         clazz('slideslist-item-holder'),
         clazzIf(isEditing, 'editing'),
         when(state.dragged != null, style('pointer-events', 'none')),
-        onClick((_) => state.editingPage = page.id),
+        onClick((_) => state.editingId = page.id),
       ];
 }
 

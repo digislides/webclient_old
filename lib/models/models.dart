@@ -43,7 +43,7 @@ class Page {
 }
 
 class Program {
-  List<Page> pages;
+  final List<Page> pages = <Page>[];
 
   int width = 0;
 
@@ -75,9 +75,11 @@ class Program {
     }
   }
 
-  void newPage() => pages.add(new Page()
-    ..id = new ObjectId().toHexString()
-    ..name = 'New page'
-    ..width = width
-    ..height = height);
+  void newPage({String id, String name: 'New page', String color: 'white'}) =>
+      pages.add(new Page()
+        ..id = id ?? new ObjectId().toHexString()
+        ..name = name
+        ..width = width
+        ..height = height
+        ..color = color);
 }

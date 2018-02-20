@@ -9,7 +9,7 @@ abstract class DataService {
 class StateService {
   Set<String> selectedIds = new Set<String>();
 
-  String editingPage;
+  String editingId;
 
   Program program;
 
@@ -20,6 +20,12 @@ class StateService {
   int dragYPos;
 
   int oldPos;
+
+  Page get editingPage {
+    if (editingId == null) return null;
+    return program.pages
+        .firstWhere((p) => p.id == editingId, orElse: () => null);
+  }
 
   Page get draggedPage {
     if (dragged == null) return null;
@@ -44,28 +50,12 @@ class StateService {
 class MockService implements DataService {
   Program getProgramById(String id) {
     return new Program()
-      ..pages = <Page>[
-        new Page()
-          ..id = '1'
-          ..name = "Page 1"
-          ..width = 100
-          ..height = 100,
-        new Page()
-          ..id = '2'
-          ..name = "Page 2"
-          ..width = 100
-          ..height = 100,
-        new Page()
-          ..id = '3'
-          ..name = "Page 3"
-          ..width = 100
-          ..height = 100,
-        new Page()
-          ..id = '4'
-          ..name = "Page 4"
-          ..width = 100
-          ..height = 100
-      ];
+      ..width = 3000
+      ..height = 1500
+      ..newPage(name: "Page 1", color: 'blue')
+      ..newPage(name: "Page 2", color: 'green')
+      ..newPage(name: "Page 3", color: 'yellow')
+      ..newPage(name: "Page 4", color: 'orange');
   }
 }
 
