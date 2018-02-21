@@ -43,11 +43,13 @@ class Page {
 }
 
 class Program {
-  final List<Page> pages = <Page>[];
+  String name;
 
   int width = 0;
 
   int height = 0;
+
+  final List<Page> pages = <Page>[];
 
   void removePagesById(Set<String> ids) {
     pages.removeWhere((p) => ids.contains(p.id));

@@ -50,6 +50,7 @@ class StateService {
 class MockService implements DataService {
   Program getProgramById(String id) {
     return new Program()
+      ..name = 'Medis'
       ..width = 3000
       ..height = 1500
       ..newPage(name: "Page 1", color: 'blue')
