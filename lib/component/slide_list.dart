@@ -159,7 +159,7 @@ class SlideListComponent implements Component {
       ]);
 
   void _update(dynamic node) {
-    storage.upsertByKey('slideslist.element', node);
+    storage.replace('slideslist.element', node);
   }
 
   void _scroll(Event e) {
@@ -185,16 +185,6 @@ class AfterInsert implements Setter {
     element.afterInsert(handler);
   }
 }
-
-class StateStorage {
-  Map<String, dynamic> _storage = <String, dynamic>{};
-
-  void upsertByKey(String key, dynamic state) => _storage[key] = state;
-
-  dynamic getByKey(String key) => _storage[key];
-}
-
-final StateStorage storage = new StateStorage();
 
 class SlideSelectComp implements Component {
   final bool isSelected;

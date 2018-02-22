@@ -60,6 +60,21 @@ class MockService implements DataService {
   }
 }
 
+class StateStorage {
+  Map<dynamic, dynamic> _storage = <dynamic, dynamic>{};
+
+  dynamic insertIfNotExists(dynamic key, dynamic state) =>
+      _storage.putIfAbsent(key, () => state);
+
+  void replace(dynamic key, dynamic state) => _storage[key] = state;
+
+  dynamic getByKey(dynamic key) => _storage[key];
+
+  dynamic remove(dynamic key) => _storage.remove(key);
+}
+
+final StateStorage storage = new StateStorage();
+
 DataService service = new MockService();
 
 StateService state = new StateService();

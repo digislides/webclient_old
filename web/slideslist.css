@@ -84,6 +84,8 @@
     border-radius: 4px;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
     cursor: col-resize;
 }
 
