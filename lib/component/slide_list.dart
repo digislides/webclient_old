@@ -210,12 +210,3 @@ Element slideSelectorComp(bool isSelected,
       ]..addAll(set),
       key: key);
 }
-
-dynamic when(condition, result) {
-  if (condition is Function) condition = condition();
-  if (condition) {
-    if (result is Function) return result();
-    return result;
-  }
-  return null;
-}

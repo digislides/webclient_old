@@ -4,7 +4,7 @@ import 'package:domino/setters.dart';
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:client/component/slide_list.dart';
 import 'package:client/component/slide_editor.dart';
-import 'package:client/component/properties_editor/properties_editor.dart';
+import 'package:client/component/properties_editor/page_editor.dart';
 
 import 'package:client/service/data.dart';
 
