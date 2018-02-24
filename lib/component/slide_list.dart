@@ -173,8 +173,6 @@ class SlideListComponent implements Component {
   }
 }
 
-List foreach<E>(List<E> list, build(E e)) => list.map(build).toList();
-
 class AfterInsert implements Setter {
   final AfterCallback handler;
 

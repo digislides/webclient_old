@@ -85,3 +85,9 @@ class Program {
         ..height = height
         ..color = color);
 }
+
+class Player {
+  String id;
+
+  String name;
+}
