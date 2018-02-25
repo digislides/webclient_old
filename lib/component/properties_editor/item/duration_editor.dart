@@ -19,18 +19,20 @@ class DurationEditor implements Component, Input<int> {
   @override
   dynamic build(BuildContext context) {
     // TODO
-    return div(content: [
-      div(content: [
-        div(set: [
+    return div([
+      clazz('prop-dur'),
+      div([
+        div([
           style('background-image', 'url(/img/duration.png)'),
           clazz('icon')
         ]),
-        span(content: '${seconds}s', set: [clazz('display')]),
-      ], set: [
-        clazz('prop-dur-icon')
+        span(['${seconds}s', clazz('display')]),
+        clazz('prop-dur-icon'),
+        onClick((_) {
+          myState.isEditing = !myState.isEditing;
+        })
       ]),
-    ], set: [
-      clazz('prop-dur')
+      when(myState.isEditing, new _DurationEditor(seconds)),
     ]);
   }
 }
@@ -45,12 +47,14 @@ class _DurationState implements State {
   int days = 0;
 
   _DurationState.fromDuration(Duration duration) {
-    // TODO
+    seconds = duration.inSeconds % 60;
+    minutes = duration.inMinutes % 60;
+    hours = duration.inMinutes % 24;
+    days = duration.inDays;
   }
 
-  _DurationState.fromSeconds(int seconds) {
-    // TODO
-  }
+  factory _DurationState(int seconds) =>
+      new _DurationState.fromDuration(new Duration(seconds: seconds));
 }
 
 class _DurationEditor implements Component {
@@ -59,11 +63,17 @@ class _DurationEditor implements Component {
   _DurationState myState;
 
   _DurationEditor(int seconds, {this.key}) {
-    myState = storage.insertIfNotExists(key, new _DurationEditor(seconds));
+    myState = storage.insertIfNotExists(key, new _DurationState(seconds));
   }
 
   @override
   dynamic build(BuildContext context) {
-    // TODO
+    return div([
+      clazz('dur-'),
+      div([textInput(), span('s'), clazz('input-row')]),
+      div([textInput(), span('m'), clazz('input-row')]),
+      div([textInput(), span('h'), clazz('input-row')]),
+      div([textInput(), span('d'), clazz('input-row')]),
+    ]);
   }
 }

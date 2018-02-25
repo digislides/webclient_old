@@ -20,26 +20,27 @@ class EditableText implements Component, Input<String> {
   @override
   dynamic build(BuildContext context) {
     if (!myState.isEditing)
-      return div(content: value, set: [
+      return div([
         clazz('propitem-editabletxt', 'not-editing'),
+        value,
         onClick((_) {
           myState.isEditing = true;
-        })
+        }),
       ]);
     else {
       if (myState.el == null) {
         myState.el = textInput(
-            set: [
-              attr('value', value),
-              onBlur((Event e) {
-                if (onInput != null) {
-                  onInput((e.domElement as html.InputElement).value);
-                }
-                myState.isEditing = false;
-                myState.el = null;
-                storage.remove(key);
-              })
-              /* TODO
+          [
+            attr('value', value),
+            onBlur((Event e) {
+              if (onInput != null) {
+                onInput((e.event as html.InputElement).value);
+              }
+              myState.isEditing = false;
+              myState.el = null;
+              storage.remove(key);
+            }),
+            /* TODO
           onKeyPress((Event e) {
             final html.KeyboardEvent event = e.domEvent;
             if (event.keyCode == html.KeyCode.ENTER) {
@@ -51,12 +52,12 @@ class EditableText implements Component, Input<String> {
             }
           })
           */
-            ],
-            key: key,
-            afterInsert:
-                ((html.Element node) => node.focus()) as AfterCallback);
+            new Symbol(key),
+            afterInsert((Change change) => change.node.focus())
+          ],
+        );
       }
-      return div(content: myState.el, set: [clazz('propitem-editabletxt')]);
+      return div([myState.el, clazz('propitem-editabletxt')]);
     }
   }
 }

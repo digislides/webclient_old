@@ -1,6 +1,5 @@
 import 'dart:html';
 import 'package:domino/html_view.dart';
-import 'package:domino/setters.dart';
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:client/component/slide_list.dart';
 import 'package:client/component/slide_editor.dart';
@@ -15,9 +14,10 @@ class TitleBar implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(
-        content: [div(content: name, set: clazz('titlebar-title'))],
-        set: [clazz('titlebar')]);
+    return div([
+      clazz('titlebar'),
+      div([name, clazz('titlebar-title')]),
+    ]);
   }
 }
 
@@ -31,13 +31,14 @@ main() async {
             new SlideListComponent(
                 state.program.pages, state.editingId, state.selectedIds),
             new PagePropBar(state.editingPage),
-            div(
-                set: [clazz('main-area')],
-                content: new Stage(
-                  width: state.editingPage.width,
-                  height: state.editingPage.height,
-                  color: state.editingPage.color,
-                  image: state.editingPage.imageId,
-                ))
+            div([
+              clazz('main-area'),
+              new Stage(
+                width: state.editingPage.width,
+                height: state.editingPage.height,
+                color: state.editingPage.color,
+                image: state.editingPage.imageId,
+              )
+            ])
           ]);
 }

@@ -1,6 +1,5 @@
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:domino/domino.dart';
-import 'package:domino/setters.dart';
 import 'package:client/models/models.dart';
 import 'package:client/service/data.dart';
 
@@ -11,24 +10,25 @@ class ProgramsList implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(content: [
+    return div([
       div(),
       foreach(
           programs,
-          (Program prog) => div(content: [
-                div(content: prog.name, set: [
+          (Program prog) => div([
+                div([
+                  prog.name,
                   onClick((_) {
                     // TODO open program
                   })
                 ]),
-                div(content: [
-                  div(content: [
-                    div(content: 'Size: '),
-                    div(content: '${prog.width}x${prog.height}'),
+                div([
+                  div([
+                    div('Size: '),
+                    div('${prog.width}x${prog.height}'),
                   ]),
-                  div(content: [
-                    div(content: '# pages: '),
-                    div(content: '${prog.pages.length}'),
+                  div([
+                    div('# pages: '),
+                    div('${prog.pages.length}'),
                   ])
                 ]),
                 // TODO delete menu
@@ -45,20 +45,64 @@ class PlayerList implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(content: [
+    return div([
       div(),
       foreach(
           players,
-          (Player player) => div(content: [
-                div(content: player.name, set: [
+          (Player player) => div([
+                div([
+                  player.name,
                   onClick((_) {
                     // TODO open program
                   })
                 ]),
-                div(content: []),
+                div([]),
                 // TODO delete menu
                 // TODO duplicate menu
               ])),
+    ]);
+  }
+}
+
+/// Component used to create a new player
+class PlayerCreator implements Component {
+  @override
+  dynamic build(BuildContext context) {
+    // TODO create player
+  }
+}
+
+/// Component used to create a new program
+class ProgramCreator implements Component {
+  @override
+  dynamic build(BuildContext context) {
+    return div([]);
+  }
+}
+
+/// Component used to edit a player
+class PlayerEditor implements Component {
+  @override
+  dynamic build(BuildContext context) {}
+}
+
+class Dashboard implements Component {
+  @override
+  dynamic build(BuildContext context) {
+    return [
+      new TitleBar(),
+    ];
+  }
+}
+
+class TitleBar implements Component {
+  TitleBar();
+
+  @override
+  dynamic build(BuildContext context) {
+    return div([
+      div(['DigiSlides', clazz('titlebar-title')]),
+      clazz('titlebar'),
     ]);
   }
 }

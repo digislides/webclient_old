@@ -16,21 +16,19 @@ class ColorPropEditor implements Component, Input<String> {
 
   @override
   dynamic build(BuildContext context) {
-    return div(content: [
-      div(content: [
-        div(set: [
-          style('background-image', 'url(/img/bgcolor.png)'),
-          clazz('icon')
-        ]),
-        div(set: [bgColor(color), clazz('display')])
-      ], set: [
+    return div([
+      div([
         clazz('propitem-color-icon'),
         onClick((_) {
           myState.isEditing = !myState.isEditing;
-        })
+        }),
+        div([
+          style('background-image', 'url(/img/bgcolor.png)'),
+          clazz('icon')
+        ]),
+        div([bgColor(color), clazz('display')]),
       ]),
       when(myState.isEditing, new Palette(color, onInput: onInput)),
-    ], set: [
       clazz('propitem-color')
     ]);
   }
@@ -45,34 +43,34 @@ class Palette implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(content: [
-      div(content: [
-        div(set: [clazz('value'), bgColor(color)]),
-        div(content: [span(content: 'r'), textInput()], set: [clazz('input')]),
-        div(content: [span(content: 'g'), textInput()], set: [clazz('input')]),
-        div(content: [span(content: 'b'), textInput()], set: [clazz('input')]),
-        div(content: [span(content: 'a'), textInput()], set: [clazz('input')]),
-      ], set: clazz('inputs')),
-      div(
-          content: _colorsGray
-              .map((String color) => new _Swatch(color, onSelected: onInput))
-              .toList(),
-          set: [clazz('swatch-row')]),
-      div(
-          content: _colorsDifferent
-              .map((String color) => new _Swatch(color, onSelected: onInput))
-              .toList(),
-          set: [clazz('swatch-row')]),
-      div(
-          content: _colorsShades.map((List<String> colors) => div(
-              content: colors
-                  .map(
-                      (String color) => new _Swatch(color, onSelected: onInput))
-                  .toList(),
-              set: [clazz('swatch-row')])),
-          set: [clazz('swatch-shades')]),
-    ], set: [
-      clazz('palette')
+    return div([
+      clazz('palette'),
+      div([
+        clazz('inputs'),
+        div([clazz('value'), bgColor(color)]),
+        div([span('r'), textInput(), clazz('input')]),
+        div([span('g'), textInput(), clazz('input')]),
+        div([span('b'), textInput(), clazz('input')]),
+        div([span('a'), textInput(), clazz('input')]),
+      ]),
+      div([
+        _colorsGray
+            .map((String color) => new _Swatch(color, onSelected: onInput)),
+        clazz('swatch-row')
+      ]),
+      div([
+        _colorsDifferent
+            .map((String color) => new _Swatch(color, onSelected: onInput)),
+        clazz('swatch-row')
+      ]),
+      div([
+        _colorsShades.map((List<String> colors) => div([
+              colors.map(
+                  (String color) => new _Swatch(color, onSelected: onInput)),
+              clazz('swatch-row')
+            ])),
+        clazz('swatch-shades')
+      ]),
     ]);
   }
 }
@@ -86,7 +84,7 @@ class _Swatch implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(set: <Setter>[
+    return div([
       clazz('swatch'),
       bgColor(color),
       when(onSelected != null, onClick((_) => onSelected(color)))

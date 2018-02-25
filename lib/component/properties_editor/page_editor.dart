@@ -1,6 +1,5 @@
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:domino/domino.dart';
-import 'package:domino/setters.dart';
 import 'package:client/models/models.dart';
 import 'package:client/service/data.dart';
 
@@ -15,7 +14,8 @@ class PagePropBar implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return div(content: [
+    return div([
+      clazz('propbar'),
       new EditableText(page.name,
           onInput: (String value) => page.name = value, key: page.id + '.name'),
       new ColorPropEditor(page.color,
@@ -23,8 +23,6 @@ class PagePropBar implements Component {
           key: page.id + '.bgcolor'),
       new DurationEditor(page.duration,
           onInput: (int duration) => page.duration, key: page.id + '.dur'),
-    ], set: [
-      clazz('propbar')
     ]);
   }
 }
