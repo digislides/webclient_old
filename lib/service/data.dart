@@ -43,6 +43,10 @@ class StateService {
 
   void removeSelectedPages() {
     program.removePagesById(selectedIds);
+    if(selectedIds.contains(editingId)) {
+      if(program.pages.length > 0) editingId = program.pages.first.id;
+      else editingId = null;
+    }
     selectedIds.clear();
   }
 }

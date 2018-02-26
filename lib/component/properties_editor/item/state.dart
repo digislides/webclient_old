@@ -1,5 +1,3 @@
-import 'package:domino/domino.dart';
-
 typedef void ValueCallBack<ValueType>(ValueType value);
 
 typedef void StringCallBack(String value);
@@ -11,9 +9,9 @@ abstract class State {}
 class EditableElementState implements State {
   dynamic original;
 
-  Element el;
-
   bool isEditing = false;
+
+  bool isStartingEditing = false;
 
   EditableElementState(this.original);
 }

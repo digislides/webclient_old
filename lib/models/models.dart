@@ -38,7 +38,16 @@ class Page {
   Page();
 
   Page clone() {
-    return new Page();
+    // TODO items
+    return new Page()
+      ..name = name
+      ..width = width
+      ..height = height
+      ..color = color
+      ..imageId = imageId
+      ..duration = duration
+      ..transition = transition
+      ..transitionDuration = transitionDuration;
   }
 }
 

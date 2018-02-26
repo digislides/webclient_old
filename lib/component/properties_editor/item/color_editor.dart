@@ -1,25 +1,28 @@
 import 'state.dart';
 import 'package:domino/domino.dart';
 import 'package:domino_nodes/domino_nodes.dart';
-import 'package:client/service/data.dart';
 
-class ColorPropEditor implements Component, Input<String> {
+class ColorPropEditor implements StatefulComponent, Input<String> {
   final String color;
 
   final StringCallBack onInput;
 
+  final String key;
+
   EditableElementState myState;
 
-  ColorPropEditor(this.color, {this.onInput, key}) {
-    myState = storage.insertIfNotExists(key, new EditableElementState(color));
-  }
+  ColorPropEditor(this.color, {this.onInput, this.key});
 
   @override
   dynamic build(BuildContext context) {
     return div([
+      clazz('propitem-color'),
+      // when(key != null, new Symbol(key)),
       div([
         clazz('propitem-color-icon'),
+        // when(key != null, new Symbol(key)),
         onClick((_) {
+          print('1');
           myState.isEditing = !myState.isEditing;
         }),
         div([
@@ -29,8 +32,16 @@ class ColorPropEditor implements Component, Input<String> {
         div([bgColor(color), clazz('display')]),
       ]),
       when(myState.isEditing, new Palette(color, onInput: onInput)),
-      clazz('propitem-color')
     ]);
+  }
+
+  Component restoreState(Component previous) {
+    if (previous is ColorPropEditor) {
+      myState = previous.myState;
+    } else {
+      myState = new EditableElementState(color);
+    }
+    return this;
   }
 }
 

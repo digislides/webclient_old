@@ -156,8 +156,8 @@ class SlideListComponent implements Component {
         new SlideListControls(selected.length),
       ]);
 
-  void _update(dynamic node) {
-    storage.replace('slideslist.element', node);
+  void _update(Change change) {
+    storage.replace('slideslist.element', change.node);
   }
 
   void _scroll(Event e) {
