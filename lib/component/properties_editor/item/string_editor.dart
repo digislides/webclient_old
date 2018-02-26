@@ -22,7 +22,6 @@ class EditableText implements StatefulComponent, Input<String> {
         when(key != null, new Symbol(key)),
         value,
         onClick((_) {
-          print('2');
           myState.isEditing = true;
           myState.isStartingEditing = true;
         }),

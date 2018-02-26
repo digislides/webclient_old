@@ -22,7 +22,6 @@ class ColorPropEditor implements StatefulComponent, Input<String> {
         clazz('propitem-color-icon'),
         // when(key != null, new Symbol(key)),
         onClick((_) {
-          print('1');
           myState.isEditing = !myState.isEditing;
         }),
         div([

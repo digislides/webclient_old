@@ -3,7 +3,7 @@ import 'package:domino/domino.dart';
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:client/service/data.dart';
 
-class DurationEditor implements Component, Input<int> {
+class DurationEditor implements StatefulComponent, Input<int> {
   final int seconds;
 
   final String key;
@@ -12,9 +12,7 @@ class DurationEditor implements Component, Input<int> {
 
   EditableElementState myState;
 
-  DurationEditor(this.seconds, {this.key, this.onInput}) {
-    myState = storage.insertIfNotExists(key, new EditableElementState(seconds));
-  }
+  DurationEditor(this.seconds, {this.key, this.onInput});
 
   @override
   dynamic build(BuildContext context) {
@@ -34,6 +32,16 @@ class DurationEditor implements Component, Input<int> {
       ]),
       when(myState.isEditing, new _DurationEditor(seconds)),
     ]);
+  }
+
+  @override
+  Component restoreState(Component previous) {
+    if(previous is DurationEditor) {
+      myState = previous.myState;
+    } else {
+      myState = new EditableElementState(seconds);
+    }
+    return this;
   }
 }
 
@@ -57,7 +65,7 @@ class _DurationState implements State {
       new _DurationState.fromDuration(new Duration(seconds: seconds));
 }
 
-class _DurationEditor implements Component {
+class _DurationEditor implements StatefulComponent {
   final String key;
 
   _DurationState myState;
@@ -69,7 +77,7 @@ class _DurationEditor implements Component {
   @override
   dynamic build(BuildContext context) {
     return div([
-      clazz('dur-'),
+      clazz('dur-dd'),
       div([textInput(), span('s'), clazz('input-row')]),
       div([textInput(), span('m'), clazz('input-row')]),
       div([textInput(), span('h'), clazz('input-row')]),
