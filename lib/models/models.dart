@@ -105,3 +105,69 @@ class Player {
 
   String name;
 }
+
+class TextItem implements PageItem {
+  String id;
+
+  String name;
+
+  int width;
+
+  int height;
+
+  int left;
+
+  int top;
+
+  String text;
+
+  TextItem();
+
+  TextItem clone() {
+    // TODO
+  }
+}
+
+class ImageItem implements PageItem {
+  String id;
+
+  String name;
+
+  int width;
+
+  int height;
+
+  int left;
+
+  int top;
+
+  String imageUrl;
+
+  ImageItem();
+
+  ImageItem clone() {
+    // TODO
+  }
+}
+
+class VideoItem implements PageItem {
+  String id;
+
+  String name;
+
+  int width;
+
+  int height;
+
+  int left;
+
+  int top;
+
+  String videoUrl;
+
+  VideoItem();
+
+  VideoItem clone() {
+    // TODO
+  }
+}
