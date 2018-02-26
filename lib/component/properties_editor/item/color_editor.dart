@@ -7,20 +7,16 @@ class ColorPropEditor implements StatefulComponent, Input<String> {
 
   final StringCallBack onInput;
 
-  final String key;
-
   EditableElementState myState;
 
-  ColorPropEditor(this.color, {this.onInput, this.key});
+  ColorPropEditor(this.color, {this.onInput});
 
   @override
   dynamic build(BuildContext context) {
     return div([
       clazz('propitem-color'),
-      // when(key != null, new Symbol(key)),
       div([
         clazz('propitem-color-icon'),
-        // when(key != null, new Symbol(key)),
         onClick((_) {
           myState.isEditing = !myState.isEditing;
         }),

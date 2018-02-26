@@ -6,6 +6,7 @@ import 'package:client/service/data.dart';
 import 'item/string_editor.dart';
 import 'item/color_editor.dart';
 import 'item/duration_editor.dart';
+import 'item/image_editor.dart';
 
 class PagePropBar implements Component {
   final Page page;
@@ -19,10 +20,10 @@ class PagePropBar implements Component {
       new EditableText(page.name,
           onInput: (String value) => page.name = value, key: page.id + '.name'),
       new ColorPropEditor(page.color,
-          onInput: (String color) => page.color = color,
-          key: page.id + '.bgcolor'),
+          onInput: (String color) => page.color = color),
       new DurationEditor(page.duration,
-          onInput: (int duration) => page.duration, key: page.id + '.dur'),
+          onInput: (int duration) => page.duration = duration),
+      new ImageEditor(page.image),
     ]);
   }
 }

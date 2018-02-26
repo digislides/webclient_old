@@ -6,8 +6,8 @@ typedef void IntCallBack(int value);
 
 abstract class State {}
 
-class EditableElementState implements State {
-  dynamic original;
+class EditableElementState<VT> implements State {
+  VT original;
 
   bool isEditing = false;
 

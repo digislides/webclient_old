@@ -1,18 +1,16 @@
+import 'dart:html' as html;
 import 'state.dart';
 import 'package:domino/domino.dart';
 import 'package:domino_nodes/domino_nodes.dart';
-import 'package:client/service/data.dart';
 
 class DurationEditor implements StatefulComponent, Input<int> {
   final int seconds;
-
-  final String key;
 
   final IntCallBack onInput;
 
   EditableElementState myState;
 
-  DurationEditor(this.seconds, {this.key, this.onInput});
+  DurationEditor(this.seconds, {this.onInput});
 
   @override
   dynamic build(BuildContext context) {
@@ -30,13 +28,13 @@ class DurationEditor implements StatefulComponent, Input<int> {
           myState.isEditing = !myState.isEditing;
         })
       ]),
-      when(myState.isEditing, new _DurationEditor(seconds)),
+      when(myState.isEditing, new _DurationEditor(seconds, onInput: onInput)),
     ]);
   }
 
   @override
   Component restoreState(Component previous) {
-    if(previous is DurationEditor) {
+    if (previous is DurationEditor) {
       myState = previous.myState;
     } else {
       myState = new EditableElementState(seconds);
@@ -45,7 +43,7 @@ class DurationEditor implements StatefulComponent, Input<int> {
   }
 }
 
-class _DurationState implements State {
+class _Duration implements State {
   int seconds = 0;
 
   int minutes = 0;
@@ -54,34 +52,103 @@ class _DurationState implements State {
 
   int days = 0;
 
-  _DurationState.fromDuration(Duration duration) {
+  _Duration.fromDuration(Duration duration) {
     seconds = duration.inSeconds % 60;
     minutes = duration.inMinutes % 60;
     hours = duration.inMinutes % 24;
     days = duration.inDays;
   }
 
-  factory _DurationState(int seconds) =>
-      new _DurationState.fromDuration(new Duration(seconds: seconds));
+  factory _Duration(int seconds) =>
+      new _Duration.fromDuration(new Duration(seconds: seconds));
 }
 
 class _DurationEditor implements StatefulComponent {
-  final String key;
+  final int seconds;
 
-  _DurationState myState;
+  final IntCallBack onInput;
 
-  _DurationEditor(int seconds, {this.key}) {
-    myState = storage.insertIfNotExists(key, new _DurationState(seconds));
-  }
+  EditableElementState<_Duration> myState;
+
+  _DurationEditor(this.seconds, {this.onInput});
 
   @override
   dynamic build(BuildContext context) {
+    bool isStartingEditing = myState.isStartingEditing;
+    myState.isStartingEditing = false;
     return div([
-      clazz('dur-dd'),
-      div([textInput(), span('s'), clazz('input-row')]),
-      div([textInput(), span('m'), clazz('input-row')]),
-      div([textInput(), span('h'), clazz('input-row')]),
-      div([textInput(), span('d'), clazz('input-row')]),
+      clazz('prop-dur-dd'),
+      div([
+        clazz('input-row'),
+        textInput([
+          when(isStartingEditing, attr('value', '${myState.original.seconds}')),
+          #seconds
+        ]),
+        span('s'),
+      ]),
+      div([
+        clazz('input-row'),
+        textInput([
+          when(isStartingEditing, attr('value', '${myState.original.minutes}')),
+          #minutes
+        ]),
+        span('m'),
+      ]),
+      div([
+        clazz('input-row'),
+        textInput([
+          when(isStartingEditing, attr('value', '${myState.original.hours}')),
+          #hours
+        ]),
+        span('h'),
+      ]),
+      div([
+        clazz('input-row'),
+        textInput([
+          when(isStartingEditing, attr('value', '${myState.original.days}')),
+          #days
+        ]),
+        span('d'),
+      ]),
+      div([
+        'Ok',
+        clazz('action'),
+        onClick((Event e) {
+          if (onInput != null) {
+            int seconds = int.parse(
+                (e.getNodeBySymbol(#seconds) as html.InputElement).value,
+                onError: (_) => 0);
+            int minutes = int.parse(
+                (e.getNodeBySymbol(#minutes) as html.InputElement).value,
+                onError: (_) => 0);
+            int hours = int.parse(
+                (e.getNodeBySymbol(#hours) as html.InputElement).value,
+                onError: (_) => 0);
+            int days = int.parse(
+                (e.getNodeBySymbol(#days) as html.InputElement).value,
+                onError: (_) => 0);
+            int ret = new Duration(
+                    seconds: seconds,
+                    minutes: minutes,
+                    hours: hours,
+                    days: days)
+                .inSeconds;
+            onInput(ret);
+          }
+        })
+      ]),
     ]);
+  }
+
+  @override
+  Component restoreState(Component previous) {
+    if (previous is _DurationEditor) {
+      myState = previous.myState;
+    } else {
+      myState = new EditableElementState(new _Duration(seconds));
+      myState.isEditing = true;
+      myState.isStartingEditing = true;
+    }
+    return this;
   }
 }

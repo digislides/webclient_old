@@ -43,9 +43,11 @@ class StateService {
 
   void removeSelectedPages() {
     program.removePagesById(selectedIds);
-    if(selectedIds.contains(editingId)) {
-      if(program.pages.length > 0) editingId = program.pages.first.id;
-      else editingId = null;
+    if (selectedIds.contains(editingId)) {
+      if (program.pages.length > 0)
+        editingId = program.pages.first.id;
+      else
+        editingId = null;
     }
     selectedIds.clear();
   }
@@ -55,9 +57,13 @@ class MockService implements DataService {
   Program getProgramById(String id) {
     return new Program()
       ..name = 'Medis'
-      ..width = 3000
-      ..height = 1500
-      ..newPage(name: "Page 1", color: 'blue')
+      ..width = 300
+      ..height = 150
+      ..newPage(
+          name: "Page 1",
+          color: 'blue',
+          image:
+              'https://hips.hearstapps.com/pop.h-cdn.co/assets/cm/15/05/54cb00c759e04_-_mars-2020-1212-k24s8k-mdn.jpg?crop=1xw:0.6666666666666666xh;center,top&resize=640:*')
       ..newPage(name: "Page 2", color: 'green')
       ..newPage(name: "Page 3", color: 'yellow')
       ..newPage(name: "Page 4", color: 'orange');

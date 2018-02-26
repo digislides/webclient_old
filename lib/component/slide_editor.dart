@@ -27,7 +27,8 @@ class Stage implements Component {
           clazz('stage'),
           style('width', '${width}px'),
           style('height', '${height}px'),
-          style('background-color', color),
+          bgColor(color),
+          when(image != null && image.isNotEmpty, bgImage('url(${image})')),
         ]),
       ]),
     ]);

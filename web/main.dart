@@ -37,7 +37,7 @@ main() async {
                 width: state.editingPage.width,
                 height: state.editingPage.height,
                 color: state.editingPage.color,
-                image: state.editingPage.imageId,
+                image: state.editingPage.image,
               )
             ])
           ]);

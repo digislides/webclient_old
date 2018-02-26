@@ -25,7 +25,7 @@ class Page {
 
   String color = 'white';
 
-  String imageId;
+  String image;
 
   int duration = 5;
 
@@ -44,7 +44,7 @@ class Page {
       ..width = width
       ..height = height
       ..color = color
-      ..imageId = imageId
+      ..image = image
       ..duration = duration
       ..transition = transition
       ..transitionDuration = transitionDuration;
@@ -86,13 +86,18 @@ class Program {
     }
   }
 
-  void newPage({String id, String name: 'New page', String color: 'white'}) =>
+  void newPage(
+          {String id,
+          String name: 'New page',
+          String color: 'white',
+          String image}) =>
       pages.add(new Page()
         ..id = id ?? new ObjectId().toHexString()
         ..name = name
         ..width = width
         ..height = height
-        ..color = color);
+        ..color = color
+        ..image = image);
 }
 
 class Player {
