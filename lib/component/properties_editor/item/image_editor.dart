@@ -18,6 +18,7 @@ class ImageEditor implements Component {
           // TODO
         }),
       ]),
+      div([clazz('img')]),
     ]);
   }
 }

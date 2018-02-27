@@ -9,7 +9,7 @@ abstract class DataService {
 class StateService {
   Set<String> selectedIds = new Set<String>();
 
-  String editingId;
+  String _editingId;
 
   Program program;
 
@@ -21,10 +21,19 @@ class StateService {
 
   int oldPos;
 
+  dynamic selectedItem;
+
+  String get editingId => _editingId;
+
+  set editingId(String v) {
+    _editingId = v;
+    selectedItem = null;
+  }
+
   Page get editingPage {
-    if (editingId == null) return null;
+    if (_editingId == null) return null;
     return program.pages
-        .firstWhere((p) => p.id == editingId, orElse: () => null);
+        .firstWhere((p) => p.id == _editingId, orElse: () => null);
   }
 
   Page get draggedPage {
@@ -43,7 +52,7 @@ class StateService {
 
   void removeSelectedPages() {
     program.removePagesById(selectedIds);
-    if (selectedIds.contains(editingId)) {
+    if (selectedIds.contains(_editingId)) {
       if (program.pages.length > 0)
         editingId = program.pages.first.id;
       else
@@ -60,8 +69,15 @@ class MockService implements DataService {
         name: "Page 1",
         color: 'blue',
         items: [
+          new ImageItem(
+              width: 300,
+              height: 150,
+              left: 0,
+              top: 0,
+              url:
+                  'https://www.ebuyer.com/blog/wp-content/uploads/2017/01/shutterstock_280630649-4-300x150.jpg'),
           new TextItem(
-              width: 50, height: 50, left: 50, top: 50, text: 'Hello people!'),
+              width: 50, height: 50, left: 125, top: 128, text: 'Evolution'),
         ],
       )
       ..newPage(

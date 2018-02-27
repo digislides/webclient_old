@@ -4,23 +4,25 @@ import 'package:domino/domino.dart';
 import 'package:domino_nodes/domino_nodes.dart';
 
 class EditableText implements StatefulComponent, Input<String> {
-  final String value;
+  final value;
 
   final String key;
 
   final StringCallBack onInput;
 
+  final rootClass;
+
   EditableElementState myState;
 
-  EditableText(this.value, {this.key, this.onInput});
+  EditableText(this.value, {this.key, this.onInput, this.rootClass});
 
   @override
   dynamic build(BuildContext context) {
     if (!myState.isEditing)
       return div([
-        clazz('propitem-editabletxt', 'not-editing'),
+        clazz('propitem-editabletxt', 'not-editing', rootClass),
         when(key != null, new Symbol(key)),
-        value,
+        value.toString(),
         onClick((_) {
           myState.isEditing = true;
           myState.isStartingEditing = true;
@@ -30,9 +32,12 @@ class EditableText implements StatefulComponent, Input<String> {
       bool isStartingEditing = myState.isStartingEditing;
       myState.isStartingEditing = false;
       return div([
-        // when(key != null, new Symbol(key)),
+        clazz('propitem-editabletxt', rootClass),
+        when(key != null, new Symbol(key)),
         textInput([
-          when(isStartingEditing, attr('value', value)),
+          when(isStartingEditing, attr('value', value.toString())),
+          when(key != null, new Symbol(key)),
+          afterInsert((Change change) => change.node.focus()),
           onBlur((Event e) {
             if (myState.isEditing && onInput != null) {
               onInput((e.element as html.InputElement).value);
@@ -50,10 +55,7 @@ class EditableText implements StatefulComponent, Input<String> {
               myState.isEditing = false;
             }
           }),
-          new Symbol(key),
-          afterInsert((Change change) => change.node.focus())
         ]),
-        clazz('propitem-editabletxt')
       ]);
     }
   }

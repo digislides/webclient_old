@@ -1,7 +1,6 @@
 import 'package:domino_nodes/domino_nodes.dart';
 import 'package:domino/domino.dart';
 import 'package:client/models/models.dart';
-import 'package:client/service/data.dart';
 
 class ProgramsList implements Component {
   final List<Program> programs;

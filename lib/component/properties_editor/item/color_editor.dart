@@ -20,10 +20,7 @@ class ColorPropEditor implements StatefulComponent, Input<String> {
         onClick((_) {
           myState.isEditing = !myState.isEditing;
         }),
-        div([
-          style('background-image', 'url(/img/bgcolor.png)'),
-          clazz('icon')
-        ]),
+        div([clazz('icon')]),
         div([bgColor(color), clazz('display')]),
       ]),
       when(myState.isEditing, new Palette(color, onInput: onInput)),

@@ -10,8 +10,8 @@ html, body {
 
 .titlebar {
     width: 100%;
-    height: 34px;
-    background-color: #2e2e2e;
+    height: 30px;
+    background: linear-gradient(to bottom, #000000, #464646);
     border: none;
     color: white;
     border-bottom: 1px solid black;
@@ -19,13 +19,20 @@ html, body {
 }
 
 .titlebar .titlebar-title {
-    font-size: 22px;
-    line-height: 35px;
+    font-size: 20px;
+    line-height: 30px;
     padding: 0px 10px;
     cursor: default;
 }
 
 .main-area {
     width: 100%;
-    height: calc(100% - 100px);
+    height: calc(100% - 164px);
+    display: flex;
+}
+
+.draw-area {
+    width: calc(100% - 31px);
+    height: 100%;
+    display: inline-block;
 }

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:bson_objectid/bson_objectid.dart';
 
 class Player {
@@ -19,6 +20,8 @@ class Page {
 
   String image;
 
+  ImageFit fit;
+
   int duration;
 
   int transition;
@@ -37,7 +40,8 @@ class Page {
       this.duration: 5,
       this.transition: 0,
       this.transitionDuration: 0,
-      this.items}) {
+      this.items,
+      this.fit: ImageFit.cover}) {
     id ??= new ObjectId().toHexString();
     items ??= new List<PageItem>();
   }
@@ -119,20 +123,63 @@ class Program {
 }
 
 abstract class PageItem {
-  String get name;
+  String get id;
 
-  int get width;
+  String name;
 
-  int get height;
+  int width;
 
-  int get left;
+  int height;
 
-  int get top;
+  int left;
+
+  int top;
 
   PageItem clone();
+
+  Rectangle<int> get rect;
 }
 
-class TextItem implements PageItem {
+abstract class PageItemMixin implements PageItem {
+  Rectangle<int> get rect => new Rectangle(left, top, width, height);
+}
+
+enum Align { left, center, right }
+
+class FontProperties {
+  /// Size of the font
+  int size;
+
+  Align align;
+
+  String family;
+
+  String color;
+
+  bool bold;
+
+  bool italic;
+
+  bool underline;
+
+  bool lineThrough;
+
+  FontProperties(
+      {this.size: 16,
+      this.align: Align.left,
+      this.family,
+      this.color: 'black',
+      this.bold: false,
+      this.italic: false,
+      this.underline: false,
+      this.lineThrough: false});
+
+  FontProperties clone() {
+    // TODO
+  }
+}
+
+class TextItem extends Object with PageItemMixin implements PageItem {
   String id;
 
   String name;
@@ -147,6 +194,8 @@ class TextItem implements PageItem {
 
   String text;
 
+  FontProperties font;
+
   TextItem(
       {this.id,
       this.name: 'Text',
@@ -154,8 +203,10 @@ class TextItem implements PageItem {
       this.height: 0,
       this.left: 0,
       this.top: 0,
-      this.text: ''}) {
+      this.text: 'Text',
+      this.font}) {
     id ??= new ObjectId().toHexString();
+    font ??= new FontProperties();
   }
 
   TextItem clone() {
@@ -165,11 +216,25 @@ class TextItem implements PageItem {
         height: height,
         left: left,
         top: top,
-        text: text);
+        text: text,
+        font: font.clone());
   }
 }
 
-class ImageItem implements PageItem {
+class ImageFit {
+  final String bgSize;
+
+  final String repeat;
+
+  const ImageFit._(this.bgSize, this.repeat);
+
+  static const none = const ImageFit._('auto', 'no-repeat');
+  static const contain = const ImageFit._('contain', 'no-repeat');
+  static const cover = const ImageFit._('cover', 'no-repeat');
+  static const tile = const ImageFit._('auto', 'repeat');
+}
+
+class ImageItem extends Object with PageItemMixin implements PageItem {
   String id;
 
   String name;
@@ -184,6 +249,8 @@ class ImageItem implements PageItem {
 
   String url;
 
+  ImageFit fit;
+
   ImageItem(
       {this.id,
       this.name: 'Image',
@@ -191,7 +258,8 @@ class ImageItem implements PageItem {
       this.height: 0,
       this.left: 0,
       this.top: 0,
-      this.url}) {
+      this.url,
+      this.fit: ImageFit.cover}) {
     id ??= new ObjectId().toHexString();
   }
 
@@ -206,7 +274,7 @@ class ImageItem implements PageItem {
   }
 }
 
-class VideoItem implements PageItem {
+class VideoItem extends Object with PageItemMixin implements PageItem {
   String id;
 
   String name;
