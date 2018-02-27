@@ -55,16 +55,20 @@ class StateService {
 
 class MockService implements DataService {
   Program getProgramById(String id) {
-    return new Program()
-      ..name = 'Medis'
-      ..width = 300
-      ..height = 150
+    return new Program(name: 'Medis', width: 300, height: 150)
       ..newPage(
-          name: "Page 1",
-          color: 'blue',
+        name: "Page 1",
+        color: 'blue',
+        items: [
+          new TextItem(
+              width: 50, height: 50, left: 50, top: 50, text: 'Hello people!'),
+        ],
+      )
+      ..newPage(
+          name: "Page 2",
+          color: 'green',
           image:
               'https://hips.hearstapps.com/pop.h-cdn.co/assets/cm/15/05/54cb00c759e04_-_mars-2020-1212-k24s8k-mdn.jpg?crop=1xw:0.6666666666666666xh;center,top&resize=640:*')
-      ..newPage(name: "Page 2", color: 'green')
       ..newPage(name: "Page 3", color: 'yellow')
       ..newPage(name: "Page 4", color: 'orange');
   }
