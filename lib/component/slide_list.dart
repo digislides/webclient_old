@@ -88,7 +88,7 @@ class SlideListComponent implements Component {
         new Symbol('slides-list'),
         div(
           [
-            new Symbol('slides-holder'),
+            #slidesHolder,
             flat(
               foreach(
                   pages,
@@ -111,14 +111,12 @@ class SlideListComponent implements Component {
                         style('top', '${state.dragYPos - 10}px'),
                       ])),
             ),
-            afterInsert(_update),
-            afterUpdate(_update),
             clazz('slideslist-list'),
             onWheel(_scroll),
             state.dragged != null ? style('cursor', 'col-resize') : null,
             state.dragged != null
                 ? onMouseMove((Event e) {
-                    html.Element el = storage.getByKey('slideslist.element');
+                    html.Element el = e.getNodeBySymbol(#slidesHolder);
                     if (state.dragged != null && el != null) {
                       html.MouseEvent event = e.event;
                       state.dragXPos = el.scrollLeft + event.offset.x;
@@ -156,13 +154,9 @@ class SlideListComponent implements Component {
         new SlideListControls(selected.length),
       ]);
 
-  void _update(Change change) {
-    storage.replace('slideslist.element', change.node);
-  }
-
   void _scroll(Event e) {
     html.WheelEvent w = e.event;
-    html.Element el = storage.getByKey('slideslist.element');
+    html.Element el = e.getNodeBySymbol(#slidesHolder);
     if (w.deltaY < 0) {
       el?.scrollLeft -= 100;
     } else if (w.deltaY > 0) {

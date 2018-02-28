@@ -16,6 +16,7 @@ html, body {
     color: white;
     border-bottom: 1px solid black;
     box-sizing: border-box;
+    display: flex;
 }
 
 .titlebar .titlebar-title {
@@ -35,4 +36,26 @@ html, body {
     width: calc(100% - 31px);
     height: 100%;
     display: inline-block;
+}
+
+.titlebar .actions {
+    display: flex;
+}
+
+.titlebar .actions .action {
+    display: flex;
+    line-height: 29px;
+    margin: 0px 5px;
+    padding: 0px 5px;
+    font-size: 11px;
+    color: #dadada;
+    cursor: pointer;
+}
+
+.titlebar .actions .action:hover {
+    text-decoration: underline;
+}
+
+.titlebar .actions .action:active {
+
 }

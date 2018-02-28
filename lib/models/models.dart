@@ -58,6 +58,38 @@ class Page {
         transitionDuration: transitionDuration,
         items: items.map((i) => i.clone()).toList());
   }
+
+  void fromMap(Map map) {
+    id = map['id'];
+    name = map['name'] ?? 'Page';
+    color = map['color'] ?? 'white';
+    image = map['image'];
+    fit = ImageFit.find(map['fit']);
+    duration = map['duration'] ?? 0;
+    // TODO transition
+    // TODO transitionDuration
+    items = ((map['pages'] ?? []) as List<Map>)
+        .map((m) {
+          if (m['type'] is int) {
+            return createItem(m['type'], m);
+          }
+          return null;
+        })
+        .where((v) => v != null)
+        .toList();
+  }
+
+  Map get toMap => {
+        'id': id,
+        'name': name,
+        'color': color,
+        'image': image,
+        'fit': fit.id,
+        'duration': duration,
+        // TODO transition
+        // TODO transitionDuration
+        'items': items.map((i) => i.toMap).toList(),
+      };
 }
 
 class Program {
@@ -120,10 +152,32 @@ class Program {
           color: color,
           image: image,
           items: items));
+
+  void fromMap(Map map) {
+    id = map['_id'];
+    name = map['name'] ?? 'Program';
+    width = map['width'] ?? 0;
+    height = map['height'] ?? 0;
+    pages = ((map['pages'] ?? []) as List<Map>)
+        .map((m) => new Page(width: width, height: height)..fromMap(m))
+        .toList();
+  }
+
+  Map get toMap => {
+        '_id': id,
+        'name': name,
+        'width': width,
+        'height': height,
+        'pages': pages.map((p) => p.toMap).toList(),
+      };
 }
+
+enum PageItemType { text, image, video }
 
 abstract class PageItem {
   String get id;
+
+  PageItemType get type;
 
   String name;
 
@@ -138,6 +192,10 @@ abstract class PageItem {
   PageItem clone();
 
   Rectangle<int> get rect;
+
+  void fromMap(Map map);
+
+  Map get toMap;
 }
 
 abstract class PageItemMixin implements PageItem {
@@ -174,9 +232,36 @@ class FontProperties {
       this.underline: false,
       this.lineThrough: false});
 
-  FontProperties clone() {
-    // TODO
+  FontProperties clone() => new FontProperties()..fromMap(toMap);
+
+  Map get toMap => {
+        'size': size,
+        'align': align.index,
+        'family': family,
+        'color': color,
+        'bold': bold,
+        'italic': italic,
+        'underline': underline,
+        'lineThrough': lineThrough,
+      };
+
+  void fromMap(Map map) {
+    size = map['size'] ?? 16;
+    align = Align.values[map['align'] ?? 0];
+    family = map['family'];
+    color = map['color'] ?? 'black';
+    bold = map['bold'] ?? false;
+    italic = map['italic'] ?? false;
+    underline = map['underline'] ?? false;
+    lineThrough = map['lineThrough'] ?? false;
   }
+}
+
+PageItem createItem(int type, Map v) {
+  if (type == PageItemType.text.index) return new TextItem()..fromMap(v);
+  if (type == PageItemType.image.index) return new ImageItem()..fromMap(v);
+  if (type == PageItemType.video.index) return new VideoItem()..fromMap(v);
+  return null;
 }
 
 class TextItem extends Object with PageItemMixin implements PageItem {
@@ -219,19 +304,58 @@ class TextItem extends Object with PageItemMixin implements PageItem {
         text: text,
         font: font.clone());
   }
+
+  @override
+  Map get toMap => {
+        'id': id,
+        'name': name,
+        'width': width,
+        'height': height,
+        'left': left,
+        'top': top,
+        'text': text,
+        'font': font.toMap,
+      };
+
+  @override
+  void fromMap(Map map) {
+    id = map['id'];
+    name = map['name'] ?? 'Text';
+    width = map['width'] ?? 0;
+    height = map['height'] ?? 0;
+    left = map['left'] ?? 0;
+    top = map['top'] ?? 0;
+    text = map['text'] ?? '';
+    font = new FontProperties()..fromMap(map['font'] ?? {});
+  }
+
+  @override
+  final PageItemType type = PageItemType.text;
 }
 
 class ImageFit {
+  final int id;
+
   final String bgSize;
 
   final String repeat;
 
-  const ImageFit._(this.bgSize, this.repeat);
+  const ImageFit._(this.id, this.bgSize, this.repeat);
 
-  static const none = const ImageFit._('auto', 'no-repeat');
-  static const contain = const ImageFit._('contain', 'no-repeat');
-  static const cover = const ImageFit._('cover', 'no-repeat');
-  static const tile = const ImageFit._('auto', 'repeat');
+  static const none = const ImageFit._(0, 'auto', 'no-repeat');
+  static const contain = const ImageFit._(1, 'contain', 'no-repeat');
+  static const cover = const ImageFit._(2, 'cover', 'no-repeat');
+  static const tile = const ImageFit._(3, 'auto', 'repeat');
+
+  static List<ImageFit> get values => [none, contain, cover, tile];
+
+  static ImageFit find(index) {
+    if (index is int) {
+      if (index < 0 || index > 3) index = 0;
+      return values[index];
+    }
+    return none;
+  }
 }
 
 class ImageItem extends Object with PageItemMixin implements PageItem {
@@ -272,6 +396,33 @@ class ImageItem extends Object with PageItemMixin implements PageItem {
         top: top,
         url: url);
   }
+
+  @override
+  Map get toMap => {
+        'id': id,
+        'name': name,
+        'width': width,
+        'height': height,
+        'left': left,
+        'top': top,
+        'url': url,
+        'fit': fit.id,
+      };
+
+  @override
+  void fromMap(Map map) {
+    id = map['id'];
+    name = map['name'] ?? 'Text';
+    width = map['width'] ?? 0;
+    height = map['height'] ?? 0;
+    left = map['left'] ?? 0;
+    top = map['top'] ?? 0;
+    url = map['url'];
+    fit = ImageFit.find(map['fit']);
+  }
+
+  @override
+  final PageItemType type = PageItemType.image;
 }
 
 class VideoItem extends Object with PageItemMixin implements PageItem {
@@ -309,4 +460,29 @@ class VideoItem extends Object with PageItemMixin implements PageItem {
         top: top,
         url: url);
   }
+
+  @override
+  Map get toMap => {
+        'id': id,
+        'name': name,
+        'width': width,
+        'height': height,
+        'left': left,
+        'top': top,
+        'url': url,
+      };
+
+  @override
+  void fromMap(Map map) {
+    id = map['id'];
+    name = map['name'] ?? 'Text';
+    width = map['width'] ?? 0;
+    height = map['height'] ?? 0;
+    left = map['left'] ?? 0;
+    top = map['top'] ?? 0;
+    url = map['url'];
+  }
+
+  @override
+  final PageItemType type = PageItemType.video;
 }

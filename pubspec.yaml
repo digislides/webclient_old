@@ -13,7 +13,7 @@ dependencies:
   domino_nodes:
     path: ../../domino/domino_nodes
   bson_objectid: ^0.1.0
-  jaguar_serializer: ^0.5.1
+  http: ^0.11.0
 
 dev_dependencies:
   browser: ^0.10.0

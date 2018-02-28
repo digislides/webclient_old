@@ -7,8 +7,9 @@ import 'package:domino_nodes/domino_nodes.dart' as dn;
 import 'dart:math';
 
 class _State {
-  Point<num> moveStart;
-  Point<num> move;
+  bool moving = false;
+  Point<num> mouse;
+  bool resize;
 }
 
 class Stage implements StatefulComponent {
@@ -45,6 +46,7 @@ class Stage implements StatefulComponent {
     // TODO
     return div([
       clazz('stage-viewport'),
+      #stageViewport,
       onClick((event) {
         onSelect(null);
         event.stopImmediatePropagation();
@@ -54,44 +56,72 @@ class Stage implements StatefulComponent {
         style('width', '${width + 300}px'),
         style('height', '${height + 300}px'),
         attr('tabIndex', '0'),
+        clazzIf(state.moving, 'moving'),
+        clazzIf(state.resize == false, 'resizing-h'),
+        clazzIf(state.resize == true, 'resizing-v'),
         when(
-            selectedItem != null &&
-                state.moveStart != null &&
-                state.move != null,
+            selectedItem != null && state.moving && state.mouse != null,
             () => [
-                  new MoveShow(new Rectangle(
-                      state.move.x - state.moveStart.x,
-                      state.move.y - state.moveStart.y,
-                      selectedItem.width,
-                      selectedItem.height)),
+                  new MoveShow(new Rectangle(state.mouse.x, state.mouse.y,
+                      selectedItem.width, selectedItem.height)),
                   onMouseUp((Event event) {
-                    selectedItem.left = state.move.x - state.moveStart.x - 150;
-                    selectedItem.top = state.move.y - state.moveStart.y - 150;
-                    state.moveStart = null;
-                    state.move = null;
+                    selectedItem.left = state.mouse.x - 150;
+                    selectedItem.top = state.mouse.y - 150;
+                    state.mouse = null;
+                    state.resize = null;
+                  }),
+                ]),
+        when(
+            selectedItem != null && state.resize != null && state.mouse != null,
+            () => [
+                  when(
+                      state.resize,
+                      new MoveShow(new Rectangle(
+                          150 + selectedItem.left,
+                          150 + selectedItem.top,
+                          selectedItem.width,
+                          _positive(state.mouse.y - (150 + selectedItem.top)))),
+                      new MoveShow(new Rectangle(
+                          150 + selectedItem.left,
+                          150 + selectedItem.top,
+                          _positive(state.mouse.x - (150 + selectedItem.left)),
+                          selectedItem.height))),
+                  onMouseUp((Event event) {
+                    if (state.resize) {
+                      selectedItem.height =
+                          _positive(state.mouse.y - (150 + selectedItem.top));
+                    } else {
+                      selectedItem.width =
+                          _positive(state.mouse.x - (150 + selectedItem.left));
+                    }
+                    state.moving = false;
+                    state.mouse = null;
+                    state.resize = null;
                   }),
                 ]),
         onMouseOut((Event event) {
-          state.moveStart = null;
-          state.move = null;
+          state.moving = false;
+          state.mouse = null;
+          state.resize = null;
         }),
         onMouseUp((Event event) {
-          state.moveStart = null;
-          state.move = null;
+          state.moving = false;
+          state.mouse = null;
+          state.resize = null;
         }),
         onKeyDown((Event event) {
-          print('here');
           html.KeyboardEvent e = event.event;
           if (e.keyCode == html.KeyCode.ESC) {
-            state.moveStart = null;
-            state.move = null;
+            state.moving = false;
+            state.mouse = null;
+            state.resize = null;
           }
         }),
-        when(selectedItem != null && state.moveStart != null,
+        when(selectedItem != null && (state.moving || state.resize != null),
             onMouseMove((Event event) {
           html.MouseEvent e = event.event;
-          if (state.moveStart != null) {
-            state.move = e.offset;
+          if (state.moving || state.resize != null) {
+            state.mouse = e.offset;
           }
         })),
         div([
@@ -102,7 +132,7 @@ class Stage implements StatefulComponent {
           when(image != null && image.isNotEmpty, bgImage('url(${image})')),
           style('background-size', fit.bgSize),
           style('background-repeat', fit.repeat),
-          when(selectedItem != null && state.moveStart != null,
+          when(selectedItem != null && (state.moving || state.resize != null),
               style('pointer-events', 'none')),
           foreach(items, (PageItem item) {
             if (item is TextItem) {
@@ -141,9 +171,10 @@ class Stage implements StatefulComponent {
           }),
           when(
               selectedItem != null,
-              () => new Anchors(selectedItem.rect, onMove: (Point move) {
-                    state.moveStart = move;
-                    if (state.moveStart == null) state.move == null;
+              () => new Anchors(selectedItem.rect, onMove: (_) {
+                    state.moving = true;
+                  }, onResize: (bool dir) {
+                    state.resize = dir;
                   })),
         ]),
       ]),
@@ -159,6 +190,8 @@ class Stage implements StatefulComponent {
     }
     return this;
   }
+
+  static int _positive(int v) => v >= 0 ? v : 0;
 }
 
 class MoveShow implements Component {
@@ -179,9 +212,11 @@ class MoveShow implements Component {
 class Anchors implements Component {
   final Rectangle<int> box;
 
-  final ValueCallBack<Point<num>> onMove;
+  final ValueCallBack<bool> onMove;
 
-  Anchors(this.box, {this.onMove});
+  final ValueCallBack<bool> onResize;
+
+  Anchors(this.box, {this.onMove, this.onResize});
 
   @override
   build(BuildContext context) {
@@ -192,41 +227,34 @@ class Anchors implements Component {
         top(box.top),
         width(box.width),
         height(box.height),
-        onMouseDown((Event event) {
-          onMove((event.event as html.MouseEvent).offset);
-        }),
         onClick((Event event) {
-          onMove(null);
+          // Deselect
         })
       ]),
       div([
-        clazz('anchor', 'anchor-nw'),
-        left(box.left - 8),
-        top(box.top - 8),
-        div(clazz('anchor-inner')),
-        onMouseDown((Event event) {})
+        clazz('anchor-move'),
+        left(box.left - 4),
+        top(box.top - 4),
+        onMouseDown((Event event) {
+          onMove(true);
+        })
       ]),
       div([
-        clazz('anchor', 'anchor-ne'),
-        left(box.right - 8),
-        top(box.top - 8),
-        div(clazz('anchor-inner')),
-        onMouseDown((Event event) {})
+        clazz('anchor', 'anchor-e'),
+        left(box.right - 3),
+        top(box.top + (box.height ~/ 2) - 8),
+        onMouseDown((Event event) {
+          onResize(false);
+        })
       ]),
       div([
-        clazz('anchor', 'anchor-sw'),
-        left(box.left - 8),
-        top(box.bottom - 8),
-        div(clazz('anchor-inner')),
-        onMouseDown((Event event) {})
+        clazz('anchor', 'anchor-s'),
+        left(box.left + (box.width ~/ 2) - 8),
+        top(box.bottom - 3),
+        onMouseDown((Event event) {
+          onResize(true);
+        })
       ]),
-      div([
-        clazz('anchor', 'anchor-se'),
-        left(box.right - 8),
-        top(box.bottom - 8),
-        div(clazz('anchor-inner')),
-        onMouseDown((Event event) {})
-      ])
     ];
   }
 }
