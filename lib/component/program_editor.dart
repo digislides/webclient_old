@@ -68,6 +68,9 @@ class ProgramEditor implements Component {
               items: state.editingPage.items,
               selectedItem: state.selectedItem,
               onSelect: (item) => state.selectedItem = item,
+              onDeleteItem: (item) {
+                state.deleteItem(item);
+              },
             )
           ])
         ]),

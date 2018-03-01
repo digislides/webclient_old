@@ -30,7 +30,7 @@ class StateService {
 
   int oldPos;
 
-  dynamic selectedItem;
+  PageItem selectedItem;
 
   String get editingId => _editingId;
 
@@ -68,6 +68,13 @@ class StateService {
         editingId = null;
     }
     selectedIds.clear();
+  }
+
+  void deleteItem(PageItem item) {
+    editingPage.items.removeWhere((i) => i.id == item.id);
+    if(selectedItem?.id == item.id) {
+      selectedItem = null;
+    }
   }
 
   dynamic overlay;

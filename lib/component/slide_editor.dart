@@ -29,6 +29,8 @@ class Stage implements StatefulComponent {
 
   final ValueCallBack<PageItem> onSelect;
 
+  final ValueCallBack<PageItem> onDeleteItem;
+
   _State state;
 
   Stage(
@@ -39,7 +41,8 @@ class Stage implements StatefulComponent {
       this.fit,
       this.items: const [],
       this.selectedItem,
-      this.onSelect});
+      this.onSelect,
+      this.onDeleteItem});
 
   @override
   dynamic build(BuildContext context) {
@@ -52,10 +55,11 @@ class Stage implements StatefulComponent {
         event.stopImmediatePropagation();
       }),
       div([
+        #canvas,
         clazz('stage-canvas'),
         style('width', '${width + 300}px'),
         style('height', '${height + 300}px'),
-        /* TODO attr('tabIndex', '0'), */
+        attr('tabIndex', '0'),
         clazzIf(state.moving, 'moving'),
         clazzIf(state.resize == false, 'resizing-h'),
         clazzIf(state.resize == true, 'resizing-v'),
@@ -115,6 +119,69 @@ class Stage implements StatefulComponent {
             state.moving = false;
             state.mouse = null;
             state.resize = null;
+          }
+          if (selectedItem != null) {
+            final int bigV = 5;
+            final int smallV = 1;
+            if (e.keyCode == html.KeyCode.DELETE) {
+              onDeleteItem(selectedItem);
+            } else if (e.keyCode == html.KeyCode.LEFT) {
+              if (!e.ctrlKey) {
+                if (e.shiftKey) {
+                  selectedItem.left -= smallV;
+                } else {
+                  selectedItem.left -= bigV;
+                }
+              } else {
+                if (e.shiftKey) {
+                  selectedItem.width = _positive(selectedItem.width - smallV);
+                } else {
+                  selectedItem.width = _positive(selectedItem.width - bigV);
+                }
+              }
+            } else if (e.keyCode == html.KeyCode.RIGHT) {
+              if (!e.ctrlKey) {
+                if (e.shiftKey) {
+                  selectedItem.left += smallV;
+                } else {
+                  selectedItem.left += bigV;
+                }
+              } else {
+                if (e.shiftKey) {
+                  selectedItem.width += smallV;
+                } else {
+                  selectedItem.width += bigV;
+                }
+              }
+            } else if (e.keyCode == html.KeyCode.UP) {
+              if (!e.ctrlKey) {
+                if (e.shiftKey) {
+                  selectedItem.top -= smallV;
+                } else {
+                  selectedItem.top -= bigV;
+                }
+              } else {
+                if (e.shiftKey) {
+                  selectedItem.height = _positive(selectedItem.height - smallV);
+                } else {
+                  selectedItem.height = _positive(selectedItem.height - bigV);
+                }
+              }
+            } else if (e.keyCode == html.KeyCode.DOWN) {
+              if (!e.ctrlKey) {
+                if (e.shiftKey) {
+                  selectedItem.top += smallV;
+                } else {
+                  selectedItem.top += bigV;
+                }
+              } else {
+                if (e.shiftKey) {
+                  selectedItem.height += smallV;
+                } else {
+                  selectedItem.height += bigV;
+                }
+              }
+            }
           }
         }),
         when(selectedItem != null && (state.moving || state.resize != null),

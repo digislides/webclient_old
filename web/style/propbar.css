@@ -248,6 +248,7 @@
     background-position: center;
     background-image: url(/img/image.png);
     background-color: #ffffff94;
+    pointer-events: none;
 }
 
 .pos-holder {
