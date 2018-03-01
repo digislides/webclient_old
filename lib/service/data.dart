@@ -69,6 +69,8 @@ class StateService {
     }
     selectedIds.clear();
   }
+
+  dynamic overlay;
 }
 
 StateService state = new StateService();

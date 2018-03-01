@@ -11,8 +11,6 @@ class EditableElementState<VT> implements State {
 
   bool isEditing = false;
 
-  bool isStartingEditing = false;
-
   EditableElementState(this.original);
 }
 

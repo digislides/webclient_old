@@ -20,24 +20,23 @@ class EditableText implements StatefulComponent, Input<String> {
   dynamic build(BuildContext context) {
     if (!myState.isEditing)
       return div([
+        new Symbol(key),
         clazz('propitem-editabletxt', 'not-editing', rootClass),
-        when(key != null, new Symbol(key)),
         value.toString(),
         onClick((_) {
           myState.isEditing = true;
-          myState.isStartingEditing = true;
         }),
       ]);
     else {
-      bool isStartingEditing = myState.isStartingEditing;
-      myState.isStartingEditing = false;
       return div([
+        new Symbol(key),
         clazz('propitem-editabletxt', rootClass),
-        when(key != null, new Symbol(key)),
         textInput([
-          when(isStartingEditing, attr('value', value.toString())),
           when(key != null, new Symbol(key)),
-          afterInsert((Change change) => change.node.focus()),
+          afterInsert((Change change) {
+            change.node.value = value.toString();
+            change.node.focus();
+          }),
           onBlur((Event e) {
             if (myState.isEditing && onInput != null) {
               onInput((e.element as html.InputElement).value);

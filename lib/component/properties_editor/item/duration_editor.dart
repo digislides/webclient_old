@@ -74,39 +74,46 @@ class _DurationEditor implements StatefulComponent {
 
   @override
   dynamic build(BuildContext context) {
-    bool isStartingEditing = myState.isStartingEditing;
-    myState.isStartingEditing = false;
     return div([
       clazz('prop-dur-dd'),
       div([
         clazz('input-row'),
         textInput([
-          when(isStartingEditing, attr('value', '${myState.original.seconds}')),
-          #seconds
+          #seconds,
+          afterInsert((Change change) {
+            change.node.value = myState.original.seconds.toString();
+            change.node.focus();
+          }),
         ]),
         span('s'),
       ]),
       div([
         clazz('input-row'),
         textInput([
-          when(isStartingEditing, attr('value', '${myState.original.minutes}')),
-          #minutes
+          #minutes,
+          afterInsert((Change change) {
+            change.node.value = myState.original.minutes.toString();
+          }),
         ]),
         span('m'),
       ]),
       div([
         clazz('input-row'),
         textInput([
-          when(isStartingEditing, attr('value', '${myState.original.hours}')),
-          #hours
+          #hours,
+          afterInsert((Change change) {
+            change.node.value = myState.original.hours.toString();
+          }),
         ]),
         span('h'),
       ]),
       div([
         clazz('input-row'),
         textInput([
-          when(isStartingEditing, attr('value', '${myState.original.days}')),
-          #days
+          #days,
+          afterInsert((Change change) {
+            change.node.value = myState.original.days.toString();
+          }),
         ]),
         span('d'),
       ]),
@@ -147,7 +154,6 @@ class _DurationEditor implements StatefulComponent {
     } else {
       myState = new EditableElementState(new _Duration(seconds));
       myState.isEditing = true;
-      myState.isStartingEditing = true;
     }
     return this;
   }

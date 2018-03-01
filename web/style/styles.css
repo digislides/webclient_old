@@ -59,3 +59,83 @@ html, body {
 .titlebar .actions .action:active {
 
 }
+
+.overlay {
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: whitesmoke;
+}
+
+.overlay .header {
+    width: 100%;
+    height: 32px;
+    background-color: #42a1ff;
+    color: #1f475f;
+    text-align: center;
+    line-height: 32px;
+    box-shadow: 1px 1px 3px 1px #00000036;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.overlay .content {
+    width: 100%;
+    height: calc(100% - 32px);
+    overflow: auto;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.form.center {
+    margin: auto;
+    width: 220px;
+    padding: 10px;
+}
+
+.form .form-row {
+    display: flex;
+    align-items: center;
+}
+
+.form .form-row .label {
+    width: 100px;
+}
+
+.form .form-row .label-input {
+    padding-bottom: 5px;
+}
+
+.form .actions {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form .action {
+    padding: 5px;
+    margin: 0px 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.form .action:hover {
+    box-shadow: 1px 1px 1px 0px #00000054;
+}
+
+.form .action:active {
+    box-shadow: 1px 1px 1px 0px #000000a8;
+}
+
+.form .action.blue {
+    background-color: #25bbff;
+}
+
+.form .action.red {
+    background-color: #ff5757;
+}

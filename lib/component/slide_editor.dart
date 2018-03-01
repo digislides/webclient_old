@@ -55,7 +55,7 @@ class Stage implements StatefulComponent {
         clazz('stage-canvas'),
         style('width', '${width + 300}px'),
         style('height', '${height + 300}px'),
-        attr('tabIndex', '0'),
+        /* TODO attr('tabIndex', '0'), */
         clazzIf(state.moving, 'moving'),
         clazzIf(state.resize == false, 'resizing-h'),
         clazzIf(state.resize == true, 'resizing-v'),

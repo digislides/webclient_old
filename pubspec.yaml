@@ -27,3 +27,7 @@ transformers:
 web:
   compiler:
     debug: dartdevc
+
+dependency_overrides:
+  domino:
+    git: https://github.com/domino-dart/domino.git

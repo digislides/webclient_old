@@ -16,6 +16,7 @@ class PropBar implements Component {
   dynamic build(BuildContext context) {
     return div([
       clazz('propbar'),
+      #propbar,
       when(selected is Page, () => new PagePropBar(selected)),
       when(selected is TextItem, () => new TextPropBar(selected)),
       when(selected is ImageItem, () => new ImagePropBar(selected)),
@@ -78,12 +79,12 @@ class ItemPositionProperties implements Component {
       new EditableText(item.name,
           rootClass: ['with-border'],
           onInput: (String value) => item.name = value,
-          key: item.id + '.name'),
+          key: 'name'),
       div([
         clazz('pos-holder'),
         icon('/img/width.png', rootClass: 'icon'),
         new EditableText(item.width.toString(),
-            key: item.id + 'width',
+            key: 'width',
             rootClass: 'text-align-right',
             onInput: (String value) =>
                 item.width = int.parse(value, onError: (_) => item.width))
@@ -92,7 +93,7 @@ class ItemPositionProperties implements Component {
         clazz('pos-holder'),
         icon('/img/height.png', rootClass: 'icon'),
         new EditableText(item.height.toString(),
-            key: item.id + 'height',
+            key: 'height',
             rootClass: 'text-align-right',
             onInput: (String value) =>
                 item.height = int.parse(value, onError: (_) => item.height))
@@ -101,7 +102,7 @@ class ItemPositionProperties implements Component {
         clazz('pos-holder'),
         icon('/img/left.png', rootClass: 'icon'),
         new EditableText(item.left.toString(),
-            key: item.id + 'left',
+            key: 'left',
             rootClass: 'text-align-right',
             onInput: (String value) =>
                 item.left = int.parse(value, onError: (_) => item.left))
@@ -110,7 +111,7 @@ class ItemPositionProperties implements Component {
         clazz('pos-holder'),
         icon('/img/top.png', rootClass: 'icon'),
         new EditableText(item.top.toString(),
-            key: item.id + 'top',
+            key: 'top',
             rootClass: 'text-align-right',
             onInput: (String value) =>
                 item.top = int.parse(value, onError: (_) => item.top))
@@ -119,7 +120,8 @@ class ItemPositionProperties implements Component {
   }
 }
 
-Element icon(String src, {dynamic rootClass}) => span([
+Element icon(String src, {dynamic rootClass}) => div([
+      #icon,
       bgImage('url(${src})'),
       style('background-size', 'contain'),
       style('background-repeat', 'no-repeat'),
