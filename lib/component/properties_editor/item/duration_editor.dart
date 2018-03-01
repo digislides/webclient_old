@@ -75,7 +75,7 @@ class _DurationEditor implements StatefulComponent {
   @override
   dynamic build(BuildContext context) {
     return div([
-      clazz('prop-dur-dd'),
+      clazz('prop-dd', 'prop-dur-dd'),
       div([
         clazz('input-row'),
         textInput([

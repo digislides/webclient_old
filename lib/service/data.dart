@@ -72,7 +72,7 @@ class StateService {
 
   void deleteItem(PageItem item) {
     editingPage.items.removeWhere((i) => i.id == item.id);
-    if(selectedItem?.id == item.id) {
+    if (selectedItem?.id == item.id) {
       selectedItem = null;
     }
   }

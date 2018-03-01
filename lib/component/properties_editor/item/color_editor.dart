@@ -47,7 +47,7 @@ class Palette implements Component {
   @override
   dynamic build(BuildContext context) {
     return div([
-      clazz('palette'),
+      clazz('prop-dd', 'palette'),
       div([
         clazz('inputs'),
         div([clazz('value'), bgColor(color)]),

@@ -104,7 +104,8 @@ class ProgramPropertiesEditor implements StatefulComponent {
           div([
             clazz('form-row'),
             div([clazz('label'), 'Width']),
-            new EditableText(myState.width, key: 'width',
+            new EditableText(myState.width,
+                key: 'width',
                 onInput: (String v) => myState.width =
                     int.parse(v, onError: (_) => program.width)),
             when(myState.width != program.width, span('*')),
@@ -112,7 +113,8 @@ class ProgramPropertiesEditor implements StatefulComponent {
           div([
             clazz('form-row'),
             div([clazz('label'), 'Height']),
-            new EditableText(myState.height, key: 'height',
+            new EditableText(myState.height,
+                key: 'height',
                 onInput: (String v) => myState.height =
                     int.parse(v, onError: (_) => program.height)),
             when(myState.height != program.height, span('*')),

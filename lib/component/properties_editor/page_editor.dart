@@ -39,7 +39,7 @@ class PagePropBar implements Component {
             onInput: (String color) => page.color = color),
         new DurationEditor(page.duration,
             onInput: (int duration) => page.duration = duration),
-        new ImageEditor(page.image)
+        new ImageEditor(page.image, onInput: (String url) => page.image = url)
       ];
 }
 
@@ -64,7 +64,7 @@ class ImagePropBar implements Component {
   @override
   build(BuildContext context) => [
         new ItemPositionProperties(item),
-        new ImageEditor(item.url),
+        new ImageEditor(item.url, onInput: (String url) => item.url = url),
       ];
 }
 
