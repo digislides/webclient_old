@@ -7,7 +7,7 @@ import 'package:client/models/models.dart';
 import 'package:client/component/properties_editor/item/string_editor.dart';
 import 'package:client/component/properties_editor/item/state.dart';
 
-import 'package:client/service/data.dart';
+import 'package:client/service/designer/data.dart';
 
 class TitleBar implements Component {
   final String name;

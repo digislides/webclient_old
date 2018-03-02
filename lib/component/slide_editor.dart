@@ -203,7 +203,7 @@ class Stage implements StatefulComponent {
               style('pointer-events', 'none')),
           foreach(items, (PageItem item) {
             if (item is TextItem) {
-              return div([
+              return new Element('pre', [
                 item.text,
                 clazz('item'),
                 onClick((event) {
@@ -216,6 +216,10 @@ class Stage implements StatefulComponent {
                 dn.top(item.top),
                 dn.color(item.font.color),
                 dn.fontSize(item.font.size),
+                when(item.font.bold, style('font-weight', 'bold')),
+                when(item.font.italic, style('font-style', 'italic')),
+                when(
+                    item.font.underline, style('text-decoration', 'underline')),
               ]);
             } else if (item is ImageItem) {
               return div([
@@ -230,8 +234,8 @@ class Stage implements StatefulComponent {
                 dn.top(item.top),
                 when(item.url != null && item.url.isNotEmpty,
                     bgImage('url(${item.url})')),
-                style('background-size', fit.bgSize),
-                style('background-repeat', fit.repeat),
+                style('background-size', item.fit.bgSize),
+                style('background-repeat', item.fit.repeat),
               ]);
             }
             // TODO other elements

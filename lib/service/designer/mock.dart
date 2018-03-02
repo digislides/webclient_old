@@ -14,7 +14,7 @@ final prog = new Program(name: 'Medis', width: 300, height: 150)
           url:
               'https://www.ebuyer.com/blog/wp-content/uploads/2017/01/shutterstock_280630649-4-300x150.jpg'),
       new TextItem(
-          width: 50, height: 50, left: 125, top: 128, text: 'Evolution'),
+          width: 70, height: 18, left: 125, top: 128, text: 'Evolution'),
     ],
   )
   ..newPage(

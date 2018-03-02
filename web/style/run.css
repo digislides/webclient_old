@@ -1,0 +1,15 @@
+.page {
+    position: relative;
+    user-select: none;
+    left: 0px;
+    top: 0px;
+}
+
+.page .item {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    font-family: inherit;
+    white-space: pre-line;
+    overflow: hidden;
+}

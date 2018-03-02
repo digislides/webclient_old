@@ -8,7 +8,7 @@ environment:
   sdk: '>=1.20.1 <2.0.0'
 
 dependencies:
-  domino: ^0.3.2
+  domino: 0.3.2+1
     # path: ../../domino/domino
   domino_nodes:
     path: ../../domino/domino_nodes
@@ -28,6 +28,6 @@ web:
   compiler:
     debug: dartdevc
 
-dependency_overrides:
-  domino:
-    git: https://github.com/domino-dart/domino.git
+# dependency_overrides:
+#  domino:
+#    git: https://github.com/domino-dart/domino.git

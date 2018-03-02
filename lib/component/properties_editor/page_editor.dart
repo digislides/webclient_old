@@ -6,6 +6,8 @@ import 'item/string_editor.dart';
 import 'item/color_editor.dart';
 import 'item/duration_editor.dart';
 import 'item/image_editor.dart';
+import 'item/paragraph_editor.dart';
+import 'item/font_editor.dart';
 
 class PropBar implements Component {
   final dynamic selected;
@@ -53,6 +55,17 @@ class TextPropBar implements Component {
         new ItemPositionProperties(item),
         new ColorPropEditor(item.font.color,
             onInput: (String color) => item.font.color = color),
+        new ParagraphEditor(item.text, onInput: (v) => item.text = v),
+        new EditableText(item.font.size,
+            key: 'font-size',
+            onInput: (v) =>
+                item.font.size = int.parse(v, onError: (_) => item.font.size)),
+        new CheckableIconButton('url(/img/bold.png)', item.font.bold,
+            onInput: (v) => item.font.bold = v),
+        new CheckableIconButton('url(/img/italic.png)', item.font.italic,
+            onInput: (v) => item.font.italic = v),
+        new CheckableIconButton('url(/img/underline.png)', item.font.underline,
+            onInput: (v) => item.font.underline = v),
       ];
 }
 

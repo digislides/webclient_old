@@ -240,17 +240,18 @@ class FontProperties {
 
   bool underline;
 
-  bool lineThrough;
+  // bool lineThrough;
 
-  FontProperties(
-      {this.size: 16,
-      this.align: Align.left,
-      this.family,
-      this.color: 'black',
-      this.bold: false,
-      this.italic: false,
-      this.underline: false,
-      this.lineThrough: false});
+  FontProperties({
+    this.size: 16,
+    this.align: Align.left,
+    this.family,
+    this.color: 'black',
+    this.bold: false,
+    this.italic: false,
+    this.underline: false,
+    // this.lineThrough: false
+  });
 
   FontProperties clone() => new FontProperties()..fromMap(toMap);
 
@@ -262,7 +263,7 @@ class FontProperties {
         'bold': bold,
         'italic': italic,
         'underline': underline,
-        'lineThrough': lineThrough,
+        // 'lineThrough': lineThrough,
       };
 
   void fromMap(Map map) {
@@ -273,7 +274,7 @@ class FontProperties {
     bold = map['bold'] ?? false;
     italic = map['italic'] ?? false;
     underline = map['underline'] ?? false;
-    lineThrough = map['lineThrough'] ?? false;
+    // lineThrough = map['lineThrough'] ?? false;
   }
 }
 

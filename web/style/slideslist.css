@@ -179,6 +179,7 @@
     user-select: none;
     pointer-events: none;
     position: absolute;
+    box-shadow: 3px 4px 2px 0px #00000070;
 }
 
 .slidelist-dropzone {

@@ -4,7 +4,7 @@ import 'package:domino/domino.dart';
 
 import 'package:client/models/models.dart';
 
-import 'package:client/service/data.dart';
+import 'package:client/service/designer/data.dart';
 
 class SlideListControls implements Component {
   final int numSelected;

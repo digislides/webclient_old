@@ -1,5 +1,7 @@
 typedef void ValueCallBack<ValueType>(ValueType value);
 
+typedef void BoolCallBack(bool value);
+
 typedef void StringCallBack(String value);
 
 typedef void IntCallBack(int value);
