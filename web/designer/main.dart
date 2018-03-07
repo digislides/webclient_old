@@ -28,6 +28,10 @@ main() async {
         state.editingId = editId;
       } else if (action == 'properties') {
         state.overlay = 'properties';
+      } else if (action == 'publish') {
+        String editId = state.editingId;
+        state.program = await service.publish(state.program.id);
+        state.editingId = editId;
       }
     }),
   );

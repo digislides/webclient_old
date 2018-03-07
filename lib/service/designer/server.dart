@@ -19,9 +19,19 @@ class MockService implements DataService {
   }
 
   @override
-  Future saveProgram(String id, Program program) async {
+  Future<Program> saveProgram(String id, Program program) async {
     Response resp =
         await client.put('/api/program/$id', body: JSON.encode(program.toMap));
+
+    if (resp.statusCode == 200) {
+      return new Program()..fromMap(JSON.decode(resp.body));
+    }
+
+    throw new Exception(); // TODO
+  }
+
+  Future<Program> publish(String id) async {
+    Response resp = await client.post('/api/program/publish/$id');
 
     if (resp.statusCode == 200) {
       return new Program()..fromMap(JSON.decode(resp.body));

@@ -34,6 +34,8 @@ class MockService implements DataService {
     prog.fromMap(program.toMap);
     return prog;
   }
+
+  Program publish(String id) => prog;
 }
 
 DataService service = new MockService();

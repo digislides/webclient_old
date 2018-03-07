@@ -59,19 +59,21 @@ class ProgramEditor implements Component {
           }),
           div([
             clazz('draw-area'),
-            new Stage(
-              width: state.editingPage.width,
-              height: state.editingPage.height,
-              color: state.editingPage.color,
-              image: state.editingPage.image,
-              fit: state.editingPage.fit,
-              items: state.editingPage.items,
-              selectedItem: state.selectedItem,
-              onSelect: (item) => state.selectedItem = item,
-              onDeleteItem: (item) {
-                state.deleteItem(item);
-              },
-            )
+            when(
+                state.editingPage != null,
+                () => new Stage(
+                      width: state.editingPage.width,
+                      height: state.editingPage.height,
+                      color: state.editingPage.color,
+                      image: state.editingPage.image,
+                      fit: state.editingPage.fit,
+                      items: state.editingPage.items,
+                      selectedItem: state.selectedItem,
+                      onSelect: (item) => state.selectedItem = item,
+                      onDeleteItem: (item) {
+                        state.deleteItem(item);
+                      },
+                    ))
           ])
         ]),
         when(state.overlay == 'properties',

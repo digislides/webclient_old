@@ -1,0 +1,163 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.titlebar {
+    width: 100%;
+    height: 50px;
+    border: none;
+    color: white;
+    box-sizing: border-box;
+    display: flex;
+    background-color: #0093ff;
+    align-items: center;
+    box-shadow: 0px 1px 5px 2px #55a6ffc4;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+}
+
+.titlebar .titlebar-title {
+    font-size: 25px;
+    cursor: default;
+    margin: 0px 25px;
+}
+
+.main-area {
+    width: 100%;
+    height: calc(100% - 50px);
+    background-color: #eee;
+    margin-top: 50px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.cards-list {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.home-card-prog {
+    background-color: white;
+    width: 300px;
+    height: 125px;
+    margin: 15px;
+    display: flex;
+    border: 1px solid #dadada;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 1px 0px gainsboro;
+}
+
+.home-card-prog .screenshot {
+    width: 125px;
+    height: 125px;
+    border-right: 1px solid #e8e8e8;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.home-card-prog .content {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.home-card-prog .content .heading {
+    font-size: 25px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #eaeaea;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.home-card-prog .content .heading:hover {
+    color: blue;
+}
+
+.home-card-prog .content .heading:active {
+    color: gray;
+}
+
+.home-card-prog .info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.home-card-prog .label {
+    width: 65px;
+    color: gray;
+}
+
+.home-card-prog .value {
+}
+
+.home-card-prog .actions {
+    padding: 2px;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+}
+
+.home-card-prog .action {
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0px 15px;
+}
+
+.home-card-prog .action:hover {
+    background-color: #eaeaea;
+}
+
+.home-card-prog .action:active {
+    border: 1px solid #bfbfbf;
+}
+
+.header {
+    display: flex;
+    font-size: 25px;
+    width: 400px;
+    margin: 10px auto;
+}
+
+.header .title {
+    flex: 1;
+    cursor: default;
+}
+
+.header .action {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    user-select: none;
+    background-color: #75ca61;
+}
+
+.header .action:hover {
+    box-shadow: 1px 2px 1px 0px #d2d2d2;
+}
+
+.header .action:active {
+    border: 1px solid #696969;
+    box-shadow: none;
+}

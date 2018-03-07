@@ -21,7 +21,7 @@ class EditableText implements StatefulComponent, Input<String> {
     if (!myState.isEditing)
       return div([
         new Symbol(key),
-        clazz('propitem-editabletxt', 'not-editing', rootClass),
+        clazz('editabletxt', 'not-editing', rootClass),
         value.toString(),
         onClick((_) {
           myState.isEditing = true;
@@ -30,7 +30,7 @@ class EditableText implements StatefulComponent, Input<String> {
     else {
       return div([
         new Symbol(key),
-        clazz('propitem-editabletxt', rootClass),
+        clazz('editabletxt', rootClass),
         textInput([
           when(key != null, new Symbol(key)),
           afterInsert((Change change) {

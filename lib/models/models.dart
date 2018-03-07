@@ -68,15 +68,16 @@ class Page {
     duration = map['duration'] ?? 0;
     // TODO transition
     // TODO transitionDuration
-    items = ((map['items'] ?? []) as List<Map>)
+    items = ((map['items'] ?? <Map>[]) as List)
         .map((m) {
           if (m['type'] is int) {
             return createItem(m['type'], m);
           }
           return null;
         })
-        .where((v) => v != null)
-        .toList();
+        .where((v) => v is PageItem)
+        .toList()
+        .cast<PageItem>();
   }
 
   Map get toMap => {
@@ -178,9 +179,11 @@ class Program {
     name = map['name'] ?? 'Program';
     width = map['width'] ?? 0;
     height = map['height'] ?? 0;
-    pages = ((map['pages'] ?? []) as List<Map>)
+    pages = ((map['pages'] ?? <Map>[]) as List)
+        .where((p) => p is Map)
         .map((m) => new Page(width: width, height: height)..fromMap(m))
-        .toList();
+        .toList()
+        .cast<Page>();
   }
 
   Map get toMap => {

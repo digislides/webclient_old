@@ -1,0 +1,81 @@
+.form.center {
+    margin: auto;
+    width: 220px;
+    padding: 10px;
+}
+
+.form .form-row {
+    display: flex;
+    align-items: center;
+}
+
+.form .form-row .label {
+    width: 100px;
+}
+
+.form .form-row .label-input {
+    padding-bottom: 5px;
+}
+
+.form .actions {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form .action {
+    padding: 5px;
+    margin: 0px 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.form .action:hover {
+    box-shadow: 1px 1px 1px 0px #00000054;
+}
+
+.form .action:active {
+    box-shadow: 1px 1px 1px 0px #000000a8;
+}
+
+.form .action.blue {
+    background-color: #25bbff;
+}
+
+.form .action.red {
+    background-color: #ff5757;
+}
+
+.editabletxt {
+    width: 100px;
+    height: 28px;
+    box-sizing: border-box;
+    padding: 3px 5px;
+    background-color: #e1e1e1;
+    box-shadow: inset 0px -1px 3px 0px #c4c4c4cf;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+}
+
+.editabletxt.not-editing {
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: none;
+    line-height: 22px;
+}
+
+.editabletxt input {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    background-color: transparent;
+    font-size: inherit;
+    text-align: inherit;
+}

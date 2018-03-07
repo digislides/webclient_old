@@ -5,7 +5,9 @@ import 'package:client/models/models.dart';
 abstract class DataService {
   FutureOr<Program> getProgramById(String id);
 
-  FutureOr saveProgram(String id, Program program);
+  FutureOr<Program> saveProgram(String id, Program program);
+
+  FutureOr<Program> publish(String id);
 }
 
 class StateService {
@@ -19,7 +21,11 @@ class StateService {
 
   set program(Program v) {
     _program = v;
-    _editingId = _program.pages.first.id;
+    if(_program.pages.length > 0) {
+      _editingId = _program.pages.first.id;
+    } else {
+      _editingId = null;
+    }
   }
 
   String dragged;
