@@ -240,7 +240,7 @@ class ProgramEditor implements StatefulComponent {
               onClick((_) async {
                 try {
                   state.context =
-                      await state.service.updateProgram(p.id, model);
+                      await state.service.editProgram(p.id, model);
                 } catch (e) {
                   // TODO
                 }

@@ -14,6 +14,9 @@ dependencies:
     path: ../../domino/domino_nodes
   bson_objectid: ^0.1.0
   http: ^0.11.0
+  async: ^2.0.6
+  jaguar_resty:
+    git: https://github.com/Jaguar-dart/resty
 
 dev_dependencies:
   browser: ^0.10.0

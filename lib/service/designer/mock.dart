@@ -1,5 +1,5 @@
 import 'package:client/models/models.dart';
-import 'data.dart';
+import 'service.dart';
 
 final prog = new Program(name: 'Medis', width: 300, height: 150)
   ..newPage(

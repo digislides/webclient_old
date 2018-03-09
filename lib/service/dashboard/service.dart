@@ -20,11 +20,13 @@ abstract class Service {
 
   FutureOr<Program> getProgramById(String id);
 
-  FutureOr<List<Program>> createPrograms(ProgramCreator program);
+  FutureOr<Program> createPrograms(ProgramCreator program);
 
-  FutureOr<List<Program>> updateProgram(String id, ProgramCreator program);
+  FutureOr<Program> editProgram(String id, ProgramCreator program);
 
   FutureOr<List<Program>> deleteProgram(String id);
+
+  FutureOr<Program> duplicateProgram(String id);
 }
 
 class State {

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:client/models/models.dart';
-import 'data.dart';
+import 'service.dart';
 import 'package:http/http.dart';
 import 'package:http/browser_client.dart';
 import 'dart:convert';

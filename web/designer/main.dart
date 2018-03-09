@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'package:domino/html_view.dart';
 import 'package:client/component/program_editor.dart';
-import 'package:client/service/designer/data.dart';
+import 'package:client/service/designer/service.dart';
 import 'package:client/service/designer/server.dart';
 
 Map<String, String> getUrlParams() {

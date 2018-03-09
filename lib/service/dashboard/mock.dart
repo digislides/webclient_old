@@ -3,7 +3,8 @@ import 'package:client/models/models.dart';
 import 'package:bson_objectid/bson_objectid.dart';
 
 final programs = <Program>[
-  new Program(name: 'Medis', width: 300, height: 150)
+  new Program(
+      id: new ObjectId().toHexString(), name: 'Medis', width: 300, height: 150)
     ..newPage(
       name: "Page 1",
       color: 'blue',
@@ -19,7 +20,11 @@ final programs = <Program>[
             width: 70, height: 18, left: 125, top: 128, text: 'Evolution'),
       ],
     ),
-  new Program(name: 'Lijeholmen', width: 100, height: 150)
+  new Program(
+      id: new ObjectId().toHexString(),
+      name: 'Lijeholmen',
+      width: 100,
+      height: 150)
     ..newPage(
         name: "Page 2",
         color: 'green',
@@ -27,7 +32,8 @@ final programs = <Program>[
             'https://hips.hearstapps.com/pop.h-cdn.co/assets/cm/15/05/54cb00c759e04_-_mars-2020-1212-k24s8k-mdn.jpg?crop=1xw:0.6666666666666666xh;center,top&resize=640:*')
     ..newPage(name: "Page 3", color: 'yellow')
     ..newPage(name: "Page 4", color: 'orange'),
-  new Program(name: 'Globen', width: 100, height: 400)
+  new Program(
+      id: new ObjectId().toHexString(), name: 'Globen', width: 100, height: 400)
     ..newPage(
         name: "Page 2",
         color: 'red',
@@ -45,29 +51,36 @@ class MockService implements Service {
   Program getProgramById(String id) =>
       programs.firstWhere((prog) => prog.id == id, orElse: () => null);
 
-  List<Program> createPrograms(ProgramCreator temp) {
+  Program createPrograms(ProgramCreator temp) {
     Program program = new Program(
         id: new ObjectId().toHexString(),
         name: temp.name,
         width: temp.width,
         height: temp.height);
     programs.add(program);
-    return programs;
+    return program;
   }
 
-  List<Program> updateProgram(String id, ProgramCreator program) {
+  Program editProgram(String id, ProgramCreator program) {
     Program p = programs.firstWhere((p) => p.id == id, orElse: () => null);
     if (p != null) {
       p.name = program.name;
       p.width = program.width;
       p.height = program.height;
     }
-    return programs;
+    return p;
   }
 
   List<Program> deleteProgram(String id) {
     programs.removeWhere((p) => p.id == id);
     return programs;
+  }
+
+  @override
+  Program duplicateProgram(String id) {
+    Program p = getProgramById(id);
+    if(p == null) return null; // TODO
+    return Program.map(p.toMap)..id = new ObjectId().toHexString();
   }
 }
 

@@ -116,6 +116,8 @@ class Program {
     this.height = height;
   }
 
+  static Program map(Map map) => new Program()..fromMap(map);
+
   int get width => _width;
 
   set width(int v) {
