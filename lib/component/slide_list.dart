@@ -90,10 +90,8 @@ class SlideListComponent implements Component {
           [
             #slidesHolder,
             flat(
-              foreach(
-                  pages,
-                  (p) => new SlideThumbnail(p, p.id == editing,
-                      selected.contains(p.id), selected.length == 0)),
+              pages.map((p) => new SlideThumbnail(p, p.id == editing,
+                  selected.contains(p.id), selected.length == 0)),
               div([
                 '+',
                 clazz('slideslist-add'),

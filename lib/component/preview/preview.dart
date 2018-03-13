@@ -20,7 +20,7 @@ class PageCanvas implements Component {
           bgImage('url(${page.image})')),
       style('background-size', page.fit.bgSize),
       style('background-repeat', page.fit.repeat),
-      foreach(page.items, (PageItem item) {
+      page.items.map((PageItem item) {
         if (item is TextItem) {
           return new Element('pre', [
             item.text,

@@ -201,7 +201,7 @@ class Stage implements StatefulComponent {
           style('background-repeat', fit.repeat),
           when(selectedItem != null && (state.moving || state.resize != null),
               style('pointer-events', 'none')),
-          foreach(items, (PageItem item) {
+          items.map((PageItem item) {
             if (item is TextItem) {
               return new Element('pre', [
                 item.text,

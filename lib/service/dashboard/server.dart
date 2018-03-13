@@ -15,11 +15,11 @@ class HttpService implements Service {
 
   @override
   Future<Program> createPrograms(ProgramCreator creator) =>
-      program.post.json(creator.toMap).fetch(Program.map);
+      program.post.json(creator).fetch(Program.map);
 
   @override
   Future<Program> editProgram(String id, ProgramCreator editor) =>
-      program.put.path('/edit/${id}').json(editor.toMap).fetch(Program.map);
+      program.put.path('/edit/${id}').json(editor).fetch(Program.map);
 
   @override
   Future<List<Program>> deleteProgram(String id) =>
@@ -27,7 +27,7 @@ class HttpService implements Service {
 
   @override
   Future<Program> duplicateProgram(String id) =>
-      program.post.path(id).fetch(Program.map);
+      program.post.path('/duplicate/${id}').fetch(Program.map);
 }
 
 HttpService service = new HttpService();

@@ -8,7 +8,7 @@ class ProgramCreator {
 
   int height;
 
-  Map get toMap => {
+  Map toJson() => {
     'name': name,
     'width': width,
     'height': height,

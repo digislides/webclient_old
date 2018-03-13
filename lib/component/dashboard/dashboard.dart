@@ -13,7 +13,8 @@ class ProgramsList implements Component {
 
   @override
   dynamic build(BuildContext context) {
-    return [
+    return div([
+      clazz('central-area'),
       div([
         clazz('header'),
         div([clazz('title'), 'Programs']),
@@ -27,62 +28,61 @@ class ProgramsList implements Component {
       ]),
       div([
         clazz('cards-list'),
-        foreach(
-            programs,
-            (Program prog) => div([
-                  clazz('home-card-prog'),
-                  div([clazz('screenshot')]),
+        programs.map((Program prog) => div([
+              clazz('home-card-prog'),
+              div([clazz('screenshot')]),
+              div([
+                clazz('content'),
+                div([
+                  clazz('heading'),
+                  prog.name,
+                  onClick((_) {
+                    html.window
+                        .open('/designer/index.html?id=${prog.id}', 'Program');
+                  })
+                ]),
+                div([
                   div([
-                    clazz('content'),
-                    div([
-                      clazz('heading'),
-                      prog.name,
-                      onClick((_) {
-                        html.window.open(
-                            '/designer/index.html?id=${prog.id}', 'Program');
-                      })
-                    ]),
-                    div([
-                      div([
-                        clazz('info-row'),
-                        div([clazz('label'), 'Size']),
-                        div([clazz('value'), '${prog.width}x${prog.height}']),
-                      ]),
-                      div([
-                        clazz('info-row'),
-                        div([clazz('label'), 'Pages']),
-                        div([clazz('value'), '${prog.pages.length}']),
-                      ])
-                    ]),
-                    div([
-                      clazz('actions'),
-                      div([
-                        clazz('action'),
-                        bgImage('url(/img/edit.png)'),
-                        onClick((_) {
-                          state.context = prog;
-                        })
-                      ]),
-                      div([
-                        clazz('action'),
-                        bgImage('url(/img/copy.png)'),
-                        onClick((_) {
-                          // TODO
-                        })
-                      ]),
-                      div([
-                        clazz('action'),
-                        bgImage('url(/img/delete.png)'),
-                        onClick((_) async {
-                          state.context =
-                              await state.service.deleteProgram(prog.id);
-                        })
-                      ]),
-                    ]),
+                    clazz('info-row'),
+                    div([clazz('label'), 'Size']),
+                    div([clazz('value'), '${prog.width}x${prog.height}']),
                   ]),
-                ])),
+                  div([
+                    clazz('info-row'),
+                    div([clazz('label'), 'Pages']),
+                    div([clazz('value'), '${prog.pages.length}']),
+                  ])
+                ]),
+                div([
+                  clazz('actions'),
+                  div([
+                    clazz('action'),
+                    bgImage('url(/img/edit.png)'),
+                    onClick((_) {
+                      state.context = prog;
+                    })
+                  ]),
+                  div([
+                    clazz('action'),
+                    bgImage('url(/img/copy.png)'),
+                    onClick((_) async {
+                      state.context =
+                          await state.service.duplicateProgram(prog.id);
+                    })
+                  ]),
+                  div([
+                    clazz('action'),
+                    bgImage('url(/img/delete.png)'),
+                    onClick((_) async {
+                      state.context =
+                          await state.service.deleteProgram(prog.id);
+                    })
+                  ]),
+                ]),
+              ]),
+            ])),
       ])
-    ];
+    ]);
   }
 }
 
@@ -95,19 +95,17 @@ class PlayerList implements Component {
   dynamic build(BuildContext context) {
     return div([
       div(),
-      foreach(
-          players,
-          (Player player) => div([
-                div([
-                  player.name,
-                  onClick((_) {
-                    // TODO open program
-                  })
-                ]),
-                div([]),
-                // TODO delete menu
-                // TODO duplicate menu
-              ])),
+      players.map((Player player) => div([
+            div([
+              player.name,
+              onClick((_) {
+                // TODO open program
+              })
+            ]),
+            div([]),
+            // TODO delete menu
+            // TODO duplicate menu
+          ])),
     ]);
   }
 }
@@ -239,8 +237,7 @@ class ProgramEditor implements StatefulComponent {
               'Update',
               onClick((_) async {
                 try {
-                  state.context =
-                      await state.service.editProgram(p.id, model);
+                  state.context = await state.service.editProgram(p.id, model);
                 } catch (e) {
                   // TODO
                 }
@@ -308,6 +305,37 @@ class Home implements Component {
   build(BuildContext context) {}
 }
 
+class Sidebar implements Component {
+  @override
+  build(BuildContext context) => div([
+        clazz('sidebar'),
+        div([
+          clazz('sidebar-item'),
+          'Front page',
+          clazzIf(state.context is HomeInfo, 'selected'),
+          // TODO
+          onClick(
+              (_) async => state.context = await state.service.getPrograms()),
+        ]),
+        div([
+          clazz('sidebar-item'),
+          'Programs',
+          clazzIf(state.context is List<Program>, 'selected'),
+          // TODO
+          onClick(
+              (_) async => state.context = await state.service.getPrograms()),
+        ]),
+        div([
+          clazz('sidebar-item'),
+          'Players',
+          clazzIf(state.context is List<Player>, 'selected'),
+          // TODO
+          onClick(
+              (_) async => state.context = await state.service.getPrograms()),
+        ]),
+      ]);
+}
+
 class Dashboard implements Component {
   @override
   dynamic build(BuildContext context) {
@@ -316,14 +344,15 @@ class Dashboard implements Component {
       div([
         clazz('main-area'),
         when(state.context is List<Program>,
-            () => new ProgramsList(state.context)),
-        when(
-            state.context is List<Player>, () => new PlayerList(state.context)),
+            () => [new Sidebar(), new ProgramsList(state.context)]),
+        when(state.context is List<Player>,
+            () => [new Sidebar(), new PlayerList(state.context)]),
         when(state.context is Program, () => new ProgramEditor(state.context)),
         when(state.context is Player, () => new PlayerEditor(state.context)),
         when(state.context == 'createProgram', () => new ProgramCreatorComp()),
         when(state.context == 'createPlayer', () => new PlayerCreator()),
-        when(state.context is HomeInfo, () => new Home(state.context)),
+        when(state.context is HomeInfo,
+            () => [new Sidebar(), new Home(state.context)]),
       ]),
     ];
   }
