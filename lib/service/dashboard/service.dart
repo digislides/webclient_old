@@ -27,6 +27,18 @@ abstract class Service {
   FutureOr<List<Program>> deleteProgram(String id);
 
   FutureOr<Program> duplicateProgram(String id);
+
+  FutureOr<List<Player>> getPlayers();
+
+  FutureOr<Player> getPlayerById(String id);
+
+  FutureOr<Player> createPlayer(ProgramCreator player);
+
+  // TODO edit player
+
+  FutureOr<List<Player>> deletePlayer(String id);
+
+  FutureOr<Player> duplicatePlayer(String id);
 }
 
 class State {

@@ -1,11 +1,11 @@
 import 'package:domino/html_view.dart';
 import 'package:domino_nodes/domino_nodes.dart';
-import 'package:client/component/slide_list.dart';
-import 'package:client/component/slide_editor.dart';
-import 'package:client/component/properties_editor/page_editor.dart';
+import 'slide_list.dart';
+import 'slide_editor.dart';
+import 'properties_editor/page_editor.dart';
 import 'package:client/models/models.dart';
-import 'package:client/component/properties_editor/item/string_editor.dart';
-import 'package:client/component/properties_editor/item/state.dart';
+import 'properties_editor/item/string_editor.dart';
+import 'properties_editor/item/state.dart';
 
 import 'package:client/service/designer/service.dart';
 
@@ -35,10 +35,10 @@ class TitleBar implements Component {
   }
 }
 
-class ProgramEditor implements Component {
+class Designer implements Component {
   final ValueCallBack<String> onAction;
 
-  ProgramEditor({this.onAction});
+  Designer({this.onAction});
 
   @override
   build(BuildContext context) => [

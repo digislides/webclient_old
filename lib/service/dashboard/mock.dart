@@ -43,6 +43,19 @@ final programs = <Program>[
     ..newPage(name: "Page 4", color: 'orange'),
 ];
 
+final players = <Player>[
+  new Player(
+      id: new ObjectId().toHexString(),
+      name: 'Globen',
+      width: 100,
+      height: 400),
+  new Player(
+      id: new ObjectId().toHexString(),
+      name: 'Lijeholmen',
+      width: 100,
+      height: 150),
+];
+
 class MockService implements Service {
   @override
   List<Program> getPrograms() => programs;
@@ -79,8 +92,37 @@ class MockService implements Service {
   @override
   Program duplicateProgram(String id) {
     Program p = getProgramById(id);
-    if(p == null) return null; // TODO
+    if (p == null) return null; // TODO
     return Program.map(p.toMap)..id = new ObjectId().toHexString();
+  }
+
+  @override
+  List<Player> getPlayers() => players;
+
+  @override
+  Player getPlayerById(String id) =>
+      players.firstWhere((player) => player.id == id, orElse: () => null);
+
+  Player createPlayer(ProgramCreator temp) {
+    Player player = new Player(
+        id: new ObjectId().toHexString(),
+        name: temp.name,
+        width: temp.width,
+        height: temp.height);
+    players.add(player);
+    return player;
+  }
+
+  List<Player> deletePlayer(String id) {
+    players.removeWhere((p) => p.id == id);
+    return players;
+  }
+
+  @override
+  Player duplicatePlayer(String id) {
+    Player p = getPlayerById(id);
+    if (p == null) return null; // TODO
+    return Player.map(p.toMap)..id = new ObjectId().toHexString();
   }
 }
 

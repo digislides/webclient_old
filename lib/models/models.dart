@@ -1,10 +1,52 @@
 import 'dart:math';
 import 'package:bson_objectid/bson_objectid.dart';
 
+class Frame {
+  String id;
+
+  int width;
+
+  int height;
+
+  String programId;
+
+  Map get toMap => {
+        'id': id,
+        'width': width,
+        'height': height,
+        'programId': programId,
+      };
+}
+
 class Player {
   String id;
 
-  String name;
+  String name = 'Player';
+
+  String owner;
+
+  int width = 0;
+
+  int height = 0;
+
+  List<Frame> frames = <Frame>[];
+
+  Player({this.id, this.name = 'Player', this.width: 0, this.height: 0});
+
+  static Player map(Map map) => new Player()..fromMap(map);
+
+  void fromMap(Map map) {
+    // TODO
+  }
+
+  Map get toMap => {
+        'id': id,
+        'name': name,
+        'owner': owner,
+        'width': width,
+        'height': height,
+        'frames': frames.map((f) => f.toMap).toList(),
+      };
 }
 
 class Page {

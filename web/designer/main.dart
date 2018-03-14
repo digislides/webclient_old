@@ -1,6 +1,6 @@
 import 'dart:html';
 import 'package:domino/html_view.dart';
-import 'package:client/component/program_editor.dart';
+import 'package:client/component/designer/designer.dart';
 import 'package:client/service/designer/service.dart';
 import 'package:client/service/designer/server.dart';
 
@@ -20,7 +20,7 @@ main() async {
   state.program = await service.getProgramById(getUrlParams()['id']);
   registerHtmlView(
     querySelector('body'),
-    new ProgramEditor(onAction: (String action) async {
+    new Designer(onAction: (String action) async {
       if (action == 'save') {
         String editId = state.editingId;
         state.program =
